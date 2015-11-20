@@ -1,14 +1,16 @@
-<html>
-    <head>
-        <title>Django API Tomfoolery</title>
-    </head>
-    <body>
-        <div>
-            <h1><a href="">Whatchur IP Address?</a></h1>
-        </div>
+{% extends 'ip/base.html' %}
 
-        <div>
-            <p>Yoor IP address iz: </p>
-        </div>
-    </body>
-</html>
+{% block content %}
+    <div>
+        <h1><a href="">Whatchur IP Address?</a></h1>
+    </div>
+
+    <div>
+        <p>Yoor IP address iz: </p>
+        <p>Number: {{ user_ip }}</p>
+        <p>Location: {{ location_details.city }}, {{ location_details.region}}, {{ location_details.country }}, {{ location_details.zip }}.</p>
+        <p>ISP Provider: {{ location_details.isp }}</p>
+        <p>Provider details: {{ location_details.as }}</p>
+        <p>Organization: {{ location_details.org }}</p>
+    </div>
+{% endblock %}
