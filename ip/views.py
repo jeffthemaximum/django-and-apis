@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def ip_index(request):
+    return render(request, 'ip/ip_index.html', {})
