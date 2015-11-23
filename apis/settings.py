@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'ip',
     'home',
     'apis',
+    'acronym',
 )
 
 MIDDLEWARE_CLASSES = (
