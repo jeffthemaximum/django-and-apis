@@ -1091,7 +1091,6 @@ body {
   line-height: 1.42857143;
   color: #333333;
   background-color: #ffffff;
-  padding-left: 10px;
 }
 input,
 button,
@@ -1417,6 +1416,7 @@ a.bg-danger:focus {
   padding-bottom: 9px;
   margin: 40px 0 20px;
   border-bottom: 1px solid #eeeeee;
+  padding-left: 10px;
 }
 ul,
 ol {
@@ -6811,4 +6811,8 @@ button.close {
   .navbar .dropdown-menu a {
     color: #fff;
   }
+}
+
+div.content {
+  padding-left: 10px;
 }

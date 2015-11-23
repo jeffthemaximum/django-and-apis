@@ -2,6 +2,40 @@
 
 {% block content %}
     <div>
-        <p>Hello, world1</p>
+        <p>Hello, world. I've been working with some API's and making fun stuff with them in Django. Here's a listing of the API's you can use on my site:</p>
+    </div>
+    <div>
+        <table class="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th>API</th>
+              <th>Description</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Find your IP Address</p>
+              </td>
+              <td>
+                <p>Returns the user details about their IP address. Also displays your historical IP address data for logged-in users.</p>
+              </td>
+              <td>
+                <a href="{% url 'ip_index' %}">IP API Link</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Test if what Dave's acronyms might mean</p>
+              </td>
+              <td>
+                <p>User inputs an email from Dave. Online form finds all the acronyms in the email and returns suggestions for what those acronyms might mean.</p>
+              </td>
+              <td>
+                <a href="">What do dave's acronyms mean?</a>
+              </td>
+            </tr>
+        </table>
     </div>
 {% endblock %}

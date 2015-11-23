@@ -6,6 +6,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 
 from home.forms import LoginForm, RegistrationForm
+import pudb
 
 
 def index(request):
@@ -59,7 +60,13 @@ def login_error(request):
 
 def logout(request):
     auth.logout(request)
-    return render_to_response('registration/logged_out.html')
+    return HttpResponseRedirect('/accounts/loggedout')
+
+
+def loggedout(request):
+    return render_to_response(
+        'registration/out.html'
+        )
 
 
 def register(request):
