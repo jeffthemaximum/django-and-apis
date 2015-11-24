@@ -1,5 +1,9 @@
 {% extends 'home/base.html' %}
 
 {% block content %}
-  <p>Hello from acronym index.</p>
+    <h1>Acronym Decoder</h1>
+    <form method="POST" class="acronym-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn-default">Decode</button>
+    </form>
 {% endblock %}

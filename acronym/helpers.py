@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-from .forms import TextForm
 import re
+import pudb
+
+text = "Hi all - some of you may have experienced a few headaches over the past two weeks as we began to implement our new Google Admin software (GoGuardian). I apologize for the rocky start, which ended-up w/us rolling back most restrictions. After learning more about the product, we're now planning to reconfigure the filter & implement the program. (if you'd like know more about CIPA compliance, please see attached) What I could really use fm/staff is a list of sites that you use in the classroom, so I can be sure to white-list those right fm/the start. At the MS, please direct that to Jeff, so he can consolidate the list. HS folks, you can let me know directly. Students' user accounts will obviously be more rigorously controlled, so again, if there's something you want your kids to be able to use in class, please let us know that too. By the way, besides the filtering (access control) component, GoGuardian also has a great Teacher Dashboard app, which if you're using the CBooks in your classroom, you'll absolutely love. Please see either Jeff or myself to learn more."
 
 
 def words_as_list(text):
@@ -39,7 +40,7 @@ def spell_check(text):
     # load words into dict
     words = {}
     mispelled_words = []
-    with open("acronym/words.txt") as f:
+    with open("/Users/curtisfinnigan/Dropbox/projects/apis/acronym/words.txt") as f:
         for line in f:
             word = line
             words[word.rstrip()] = True
@@ -54,28 +55,9 @@ def spell_check(text):
             pass
         else:
             mispelled_words.append(word)
-    mispelled_words.sort(lambda x, y: cmp(len(y), len(x)))
     print mispelled_words
 
     # return mispelled words
     return mispelled_words
 
-
-# Create your views here.
-def acronym_index(request):
-    if request.method == 'POST':
-        form = TextForm(request.POST)
-        if form.is_valid():
-            text = request.POST['email']
-            print text
-            # spell check text
-            mispelled_words = spell_check(text)
-            # check mispelled words in acronym api
-
-            # check mispelled words in abbreviation api
-
-            # return text, acronym suggestions, abbreviation suggestions
-            return render(request, 'acronym/acronym_response.html', {'text': text, 'mispelled_words': mispelled_words})
-    else:
-        form = TextForm()
-    return render(request, 'acronym/acronym_index.html', {'form': form})
+print spell_check(text)
