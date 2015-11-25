@@ -16,8 +16,7 @@ class ApiGet(object):
         r = get(self.url).json()
         return r
 
-text = "sb ba"
-
+text = "w/in"
 
 def get_acronym_api(acronym):
     # pu.db
@@ -38,7 +37,8 @@ def format_words(text):
             # remove trailing punctuation
             word = word.rstrip("?:!.,;()\"\'")
             word = word.lstrip("?:!.,;()\"\'")
-            if any(i in '?:!.,;()\"\'-/' for i in word):
+            # check if punctuation in the middle of word, and check that it's not an I contraction
+            if any(i in '?:!.,;()\"\'-/' for i in word) and word[0] != "I":
                 # check words split by punctuation
                 for c in word:
                     if c.isalpha() is not True:
@@ -46,23 +46,45 @@ def format_words(text):
                         word = word.replace(c, " ")
                         # split two words into array of individual words
                         words = word.split(" ")
-                        # add individual words to text
-                        text.append(words[0])
-                        # delete original word from lsit
-                        text[i] = words[1]
+                        # check if split word is just two letters, if so, join, something like s/b
+                        if len(words[0]) == 1 and len(words[1]) == 1 and words[0] != "I":
+                            text[i] = words[0] + words[1]
+                        #check if one of the split words is just one letter, if so, chuck it, something like they'd
+                        # elif len(words[0]) == 1:
+                        #     text[i] = words[1]
+                        elif len(words[1]) == 1:
+                            text[i] = words[0]
+                        # else, split words
+                        else:
+                            # add individual words to text
+                            text.append(words[0])
+                            # delete original word from lsit
+                            text[i] = words[1]
             else:
                 text[i] = word
         else:
-            text.remove(word)
+            text[i] == word
     print "format words: " + str(text)
     return text
+
+def parse_acronyms(word):
+    acronyms = []
+    rs = get_acronym_api(word)
+    if rs != []:
+        for i in range(len(rs[0]["lfs"])):
+            acronym = rs[0]["lfs"][i]["lf"]
+            acronyms.append(acronym)
+        return acronyms
+    else:
+        return None
 
 
 def spell_check(text):
     # load words into dict
     words = {}
     mispelled_words = []
-    with open("/Users/curtisfinnigan/Dropbox/projects/apis/acronym/words.txt") as f:
+    # acronym_list = []
+    with open("/Users/jeff/Dropbox/projects/apis/acronym/words.txt") as f:
         for line in f:
             word = line
             words[word.rstrip()] = True
@@ -73,14 +95,16 @@ def spell_check(text):
         # make word lowercase to check against all words
         word = word.lower()
         # if word not in dict, add to mispelled words list
-        if word in words:
+        if word in words or any(c.isalpha() for c in word) is not True:
             pass
         else:
-            mispelled_words.append(word)
-            rs = get_acronym_api(word)
-            for i in range(len(rs[0]["lfs"])):
-                print "possible acronym: " + rs[0]["lfs"][i]["lf"]
-    print mispelled_words
+            # get possible acronyms
+            acronyms = parse_acronyms(word)
+            # add word and acronyms to list
+            mispelled_words.append([word, acronyms])
+
+    # mispelled_words.sort(lambda x, y: cmp(len(y), len(x)))
+    # print mispelled_words
 
     # return mispelled words
     return mispelled_words
