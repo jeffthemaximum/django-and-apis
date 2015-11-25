@@ -24,6 +24,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'ip_index' %}">Get Your IP Address</a></li>
+                <li><a href="{% url 'acronym_index' %}">Decode an email from Dave</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if request.user.is_authenticated %}

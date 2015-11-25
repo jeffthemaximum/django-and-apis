@@ -2,6 +2,8 @@
 
 {% block content %}
     <h1>Acronym Decoder</h1>
+    <p><b>Directions: </b>Dave sends out some crazy abbreviations in his email. Copy/paste an email from Dave into the "input" box below and then his the "decode" button. This will tell you what his abbreviations might mean! Hint: You can paste the WHOLE email. You don't have to just paste the abbreviations.</p>
+    <br>
     <form method="POST" class="acronym-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn-default">Decode</button>

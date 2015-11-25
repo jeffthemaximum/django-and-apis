@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import TextForm
+from requests import get
 import re
 
 
@@ -35,10 +36,30 @@ def format_words(text):
     return text
 
 
+def get_acronym_api(acronym):
+    # pu.db
+    url = "http://www.nactem.ac.uk/software/acromine/dictionary.py?sf="
+    r = get(url + acronym).json()
+    return r
+
+
+def parse_acronyms(word):
+    acronyms = []
+    rs = get_acronym_api(word)
+    if rs != []:
+        for i in range(len(rs[0]["lfs"])):
+            acronym = rs[0]["lfs"][i]["lf"]
+            acronyms.append(acronym)
+        return acronyms
+    else:
+        return None
+
+
 def spell_check(text):
     # load words into dict
     words = {}
     mispelled_words = []
+    # acronym_list = []
     with open("acronym/words.txt") as f:
         for line in f:
             word = line
@@ -53,9 +74,13 @@ def spell_check(text):
         if word in words:
             pass
         else:
-            mispelled_words.append(word)
-    mispelled_words.sort(lambda x, y: cmp(len(y), len(x)))
-    print mispelled_words
+            # get possible acronyms
+            acronyms = parse_acronyms(word)
+            # add word and acronyms to list
+            mispelled_words.append([word, acronyms])
+
+    # mispelled_words.sort(lambda x, y: cmp(len(y), len(x)))
+    # print mispelled_words
 
     # return mispelled words
     return mispelled_words
@@ -66,7 +91,7 @@ def acronym_index(request):
     if request.method == 'POST':
         form = TextForm(request.POST)
         if form.is_valid():
-            text = request.POST['email']
+            text = request.POST['input']
             print text
             # spell check text
             mispelled_words = spell_check(text)

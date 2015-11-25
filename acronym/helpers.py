@@ -1,7 +1,29 @@
 import re
 import pudb
+from requests import get
 
-text = "Hi all - some of you may have experienced a few headaches over the past two weeks as we began to implement our new Google Admin software (GoGuardian). I apologize for the rocky start, which ended-up w/us rolling back most restrictions. After learning more about the product, we're now planning to reconfigure the filter & implement the program. (if you'd like know more about CIPA compliance, please see attached) What I could really use fm/staff is a list of sites that you use in the classroom, so I can be sure to white-list those right fm/the start. At the MS, please direct that to Jeff, so he can consolidate the list. HS folks, you can let me know directly. Students' user accounts will obviously be more rigorously controlled, so again, if there's something you want your kids to be able to use in class, please let us know that too. By the way, besides the filtering (access control) component, GoGuardian also has a great Teacher Dashboard app, which if you're using the CBooks in your classroom, you'll absolutely love. Please see either Jeff or myself to learn more."
+
+class ApiGet(object):
+    def __init__(self, url, request):
+        self.url = url
+        self.request = request
+
+    def get_string_response(self):
+        r = get(self.url).text
+        return r
+
+    def get_json_response(self):
+        r = get(self.url).json()
+        return r
+
+text = "sb ba"
+
+
+def get_acronym_api(acronym):
+    # pu.db
+    url = "http://www.nactem.ac.uk/software/acromine/dictionary.py?sf="
+    r = get(url + acronym).json()
+    return r
 
 
 def words_as_list(text):
@@ -55,6 +77,9 @@ def spell_check(text):
             pass
         else:
             mispelled_words.append(word)
+            rs = get_acronym_api(word)
+            for i in range(len(rs[0]["lfs"])):
+                print "possible acronym: " + rs[0]["lfs"][i]["lf"]
     print mispelled_words
 
     # return mispelled words

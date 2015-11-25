@@ -1,27 +1,31 @@
 {% extends 'home/base.html' %}
 
 {% block content %}
-  <p>Hello from acronym response.</p>
+  <h4>Here's the original text you entered: </h4>
   <p> {{ text }}</p>
   <div class = "dashboard" id="acronym-data">
-        <h4>Here's your suggestion for what those abbreviations might mean:</h4>
-        <table class="table table-striped table-hover ">
-          <thead>
-            <tr>
-              <th>Possible Acronym</th>
-              <th>Suggestions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for word in mispelled_words %}
-            <tr>
-              <td>
-                {{ word }}
-              </td>
-              <td>
-              </td>
-            </tr>
+    <br>
+    <h4>Here's your suggestion for what those abbreviations might mean:</h4>
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Possible Acronym</th>
+          <th>Suggestions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for word in mispelled_words %}
+        <tr>
+          <td>
+            {{ word.0 }}
+          </td>
+          <td>
+            {% for acronym in word.1 %}
+                {{ acronym }}, 
             {% endfor %}
-        </table>
-    </div>
+          </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
