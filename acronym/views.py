@@ -48,9 +48,11 @@ def format_words(text):
 
 
 def get_acronym_api(acronym):
-    # pu.db
     url = "http://www.nactem.ac.uk/software/acromine/dictionary.py?sf="
-    r = get(url + acronym).json()
+    try:
+        r = get(url + acronym).json()
+    except:
+        r = []
     return r
 
 
