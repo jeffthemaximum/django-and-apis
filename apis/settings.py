@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'home',
     'apis',
     'acronym',
+    'random_nums',
 )
 
 MIDDLEWARE_CLASSES = (
