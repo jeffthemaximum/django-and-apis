@@ -68,7 +68,15 @@ def parse_acronyms(word):
         return None
 
 
+def strip_non_ascii(string):
+    ''' Returns the string without non ASCII characters'''
+    stripped = (c for c in string if 0 < ord(c) < 127)
+    return ''.join(stripped)
+
+
 def spell_check(text):
+    # remove non ascii chars
+    text = strip_non_ascii(text)
     # load words into dict
     words = {}
     mispelled_words = []
@@ -93,7 +101,7 @@ def spell_check(text):
             mispelled_words.append([word, acronyms])
 
     # mispelled_words.sort(lambda x, y: cmp(len(y), len(x)))
-    # print mispelled_words
+    print mispelled_words
 
     # return mispelled words
     return mispelled_words
