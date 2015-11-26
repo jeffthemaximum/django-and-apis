@@ -105,7 +105,6 @@ def acronym_index(request):
         form = TextForm(request.POST)
         if form.is_valid():
             text = request.POST['input']
-            print text
             # spell check text
             mispelled_words = spell_check(text)
             # check mispelled words in acronym api
