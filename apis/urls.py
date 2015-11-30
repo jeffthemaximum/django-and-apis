@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ip/', include('ip.urls')),
     url(r'^acronym/', include('acronym.urls')),
-    url(r'^random/', include('random_nums.url')),
+    url(r'^random/', include('random_nums.urls')),
     url(r'', include('home.urls')),
     # url(r'', include('home.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

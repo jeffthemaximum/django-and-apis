@@ -17,18 +17,18 @@
           </thead>
           <tbody>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ random_num }}</td>
+              <td>{{ random_num.count }}</td>
+              <td>{{ random_num.frequency }}</td>
             </tr>
         </table>
     </div>
     <br>
-    {% if request.user.is_authenticated %}
     <div class = "dashboard" id="random-user-data">
         <h4>Here's your historical random num data:</h4>
         <table class="table table-striped table-hover ">
           <thead>
+            {% for num in all_nums %}
             <tr>
               <th>Num</th>
               <th>Count</th>
@@ -37,11 +37,11 @@
           </thead>
           <tbody>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ num }}</td>
+              <td>{{ num.count }}</td>
+              <td>{{ num.frequency }}</td>
             </tr>
+            {% endfor %}
         </table>
     </div>
-    {% endif %}
 {% endblock %}
