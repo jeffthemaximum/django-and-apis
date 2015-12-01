@@ -52,11 +52,22 @@
 
     <div class="task-list">
       <h3>Add a task</h3>
-      <form id="todo-form">
-        <input type="text" placeholder="Title" />
-        <textarea placeholder="Descrtipion"></textarea>
+      <form id="todo-form" action="{% url 'user_todo' username=username %}" method="POST">
+        {% csrf_token %}
+        <div class="fieldWrapper">
+            {{ form.title.errors }}
+            {{ form.title }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.text.errors }}
+            {{ form.text }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.due_date.errors }}
+            {{ form.due_date }}
+        </div>
         <input type="text" placeholder="Due Date (dd/mm/yyyy)" />
-        <input type="button" class="btn btn-primary" value="Add Task" />
+        <input type="submit" class="btn btn-primary" value="Add Task" />
       </form>
 
       <input type="button" class="btn btn-primary" value="Clear Data" />
