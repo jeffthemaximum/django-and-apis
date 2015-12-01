@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'acronym',
     'random_nums',
     'images',
+    'todo',
 )
 
 MIDDLEWARE_CLASSES = (
