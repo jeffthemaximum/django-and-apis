@@ -1,0 +1,30 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+
+    <!-- Upload form. Note enctype attribute! -->
+    <form action="{% url "images_index" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile.label_tag }} </p>
+            <p>
+                    {{ form.docfile.errors }}
+                    {{ form.docfile }}
+            </p>
+            <p><input type="submit" value="Upload" /></p>
+    </form>
+
+    <!-- List of uploaded images -->
+    {% if images %}
+            <ul>
+            {% for image in images %}
+                    <li><a href="{{ image.docfile.url }}">{{ image.docfile.name }}<br>
+                    <img src="{{ image.docfile.url }}" alt="{{ image.docfile.name }}">
+                    </a></li><br>
+            {% endfor %}
+            </ul>
+    {% else %}
+            <p>No images.</p>
+    {% endif %}
+
+{% endblock %}

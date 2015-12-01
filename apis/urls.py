@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
-from . import views
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -24,6 +23,7 @@ urlpatterns = [
     url(r'^ip/', include('ip.urls')),
     url(r'^acronym/', include('acronym.urls')),
     url(r'^random/', include('random_nums.urls')),
+    url(r'^images/', include('images.urls')),
     url(r'', include('home.urls')),
     # url(r'', include('home.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
