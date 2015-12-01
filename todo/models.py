@@ -11,12 +11,23 @@ class Todo(models.Model):
         default=timezone.now)
     due_date = models.DateTimeField(
         blank=True, null=True)
-    shared_user = models.ManyToManyField(User, related_name="shared_users")
+    completed_date = models.DateTimeField(
+        blank=True, null=True)
+    shared_user = models.ManyToManyField(
+        User,
+        related_name="shared_users",
+        blank=True,
+        null=True
+    )
     completed = models.BooleanField(default=False)
 
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+
+    def complete(self):
+        self.completed = True
+        self.completed_date = timezone.now()
 
     def __str__(self):
         return self.title

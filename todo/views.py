@@ -17,6 +17,14 @@ def todo_index(request):
 def user_todo(request, username):
     # display list of all user's to do's that aren't completed
     todos = Todo.objects.filter(author=request.user).filter(completed=False)
+    # get list of shared todo's
+    shared_todos = Todo.objects.filter(shared_user=request.user).filter(completed=False)
+    # get list of completed to-do's that belong to user
+    completed_todos = Todo.objects.filter(author=request.user).filter(completed=True)
     # if no to-do's, display a prompt to make some
     # show box to view completed to-do's
-    return render(request, 'todo/user_todo.html', {'username': username})
+    return render(
+        request,
+        'todo/user_todo.html',
+        {'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+    )

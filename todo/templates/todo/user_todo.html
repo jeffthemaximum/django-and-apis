@@ -4,22 +4,50 @@
   <div>
     <h4>Hello, {{ username }}!</h4>
   </div>
-  <div class="task-list" id="pending">
-      <h3>Pending</h3>
-      <!-- Sample task added manually to check look -->
-      <div class="todo-task">
-        <div class="task-header">Sample Header</div>
-        <div class="task-date">25/06/1992</div>
-        <div class="task-description">Lorem Ipsum Dolor Sit Amet</div>
-      </div>
+    <div class="task-list" id="pending">
+        <h3>My incomplete tasks</h3>
+        <!-- Sample task added manually to check look -->
+        {% for todo in todos %}
+        <div class="todo-task">
+          <div class="task-header">{{ todo.title }}</div>
+          <div class="task-date">Created: {{ todo.created_date }}</div>
+          <div class="task-date">Due: {{ todo.due_date }}</div>
+          <div class="task-description">{{ todo.text }}</div>
+        </div>
+        {% empty %}
+          <div class="task-description">No tasks yet. Add some to get started!</div>
+        {% endfor %}
     </div>
 
     <div class="task-list" id="inProgress">
-      <h3>In Progress</h3>
+      <h3>Shared incompletes</h3>
+        <!-- Sample task added manually to check look -->
+        {% for shared_todo in shared_todos %}
+        <div class="todo-task">
+          <div class="task-header">{{ shared_todo.title }}</div>
+          <div class="task-date">Author: {{ shared_todo.author }}</div>
+          <div class="task-date">Created: {{ shared_todo.created_date }}</div>
+          <div class="task-date">Due: {{ shared_todo.due_date }}</div>
+          <div class="task-description">{{ shared_todo.text }}</div>
+        </div>
+        {% empty %}
+          <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
+        {% endfor %}
     </div>
 
     <div class="task-list" id="completed">
       <h3>Completed</h3>
+        <!-- Sample task added manually to check look -->
+        {% for completed_todo in completed_todos %}
+        <div class="todo-task">
+          <div class="task-header">{{ completed_todo.title }}</div>
+          <div class="task-date">Created: {{ completed_todo.created_date }}</div>
+          <div class="task-date">Due: {{ completed_todo.due_date }}</div>
+          <div class="task-description">{{ completed_todo.text }}</div>
+        </div>
+        {% empty %}
+          <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
+        {% endfor %}
     </div>
 
     <div class="task-list">
