@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import Todo
 
-# Create your views here.
+
+def ip_index(request):
+    return render(request, 'todo/todo_index.html', {})
