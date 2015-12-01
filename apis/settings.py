@@ -124,6 +124,7 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'home/static'),
     os.path.join(BASE_DIR, 'ip/static'),
+    os.path.join(BASE_DIR, 'todo/templates/todo')
 )
 
 STATICFILES_FINDERS = (

@@ -20,3 +20,5 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+
+# update such that tasks belog to todo's. tasks are what need to be completed in a to do.

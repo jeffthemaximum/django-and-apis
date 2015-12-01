@@ -15,4 +15,8 @@ def todo_index(request):
 
 
 def user_todo(request, username):
+    # display list of all user's to do's that aren't completed
+    todos = Todo.objects.filter(author=request.user).filter(completed=False)
+    # if no to-do's, display a prompt to make some
+    # show box to view completed to-do's
     return render(request, 'todo/user_todo.html', {'username': username})
