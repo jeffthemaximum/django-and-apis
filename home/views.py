@@ -10,7 +10,11 @@ import pudb
 
 
 def index(request):
-    return render(request, 'home/index.html', {})
+    if request.user.is_authenticated():
+        username = request.user.username
+        return render(request, 'home/index.html', {'username': username})
+    else:
+        return render(request, 'home/index.html', {})
 
 
 def loggedin(request):
