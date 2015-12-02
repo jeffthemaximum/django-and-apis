@@ -29,16 +29,21 @@ def get_completed_todos(request):
     return Todo.objects.filter(author=request.user).filter(completed=True)
 
 
+def save_form(form, request):
+    todo = form.save(commit=False)
+    todo.author = request.user
+    todo.save()
+    todo.shared_user = form.cleaned_data['shared_user']
+    todo.save()
+
+
 def user_todo(request, username):
     shared_todos = get_shared_todos(request)
     # show box to view completed to-do's
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
-            todo = form.save(commit=False)
-            todo.author = request.user
-            todo.save()
-            # requery to get updated stuffs
+            save_form(form, request)
             todos = get_todos(request)
             completed_todos = get_completed_todos(request)
             form = TodoForm()
