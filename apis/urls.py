@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^random/', include('random_nums.urls')),
     url(r'^images/', include('images.urls')),
     url(r'^todo/', include('todo.urls')),
+    url(r'^friends/', include('friendship.urls')),
     url(r'', include('home.urls')),
     # url(r'', include('home.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

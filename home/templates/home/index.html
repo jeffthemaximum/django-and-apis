@@ -49,4 +49,46 @@
             </tr>
         </table>
     </div>
+    <br>
+    <div>
+        <p>I've continued learning Django, and graduated to non-api projects. Here's some of my recents:</p>
+    </div>
+
+    <div>
+        <table class="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>To-do app</p>
+              </td>
+              <td>
+                <p>Basic to-do list functionality. STILL A WORK IN PROGRESS! Allows list creation, completion, and sharing of lists between friends.</p>
+              </td>
+              <td>
+                <a href="{% url 'todo_index' %}">To-do App Link</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Friends</p>
+              </td>
+              <td>
+                <p>Allows users of Django API Tomfoolery to connect with friends. They accept, reject, follow, etc. STILL A WORK IN PROGRESS!</p>
+              </td>
+              <td>
+                <!-- if user not logged in, show link to register -->
+                <!-- if user logged in, show link to friends (need to pass username from view function)-->
+                <a href="{% url 'friendship_view_friends' 'username' %}">Friendship Link</a>
+              </td>
+            </tr>
+          
+        </table>
+    </div>
 {% endblock %}
