@@ -132,6 +132,7 @@ button {
 button,
 select {
   text-transform: none;
+  margin-left: 5px;
 }
 button,
 html input[type="button"],

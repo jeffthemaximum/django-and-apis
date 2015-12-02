@@ -71,7 +71,10 @@
             {{ form.shared_user.errors }}
             {{ form.shared_user }}
         </div>
-        <br>
+        <div class="fieldWrapper">
+            {{ form.completed.errors }}
+            {{ form.completed.label_tag}} {{ form.completed }}
+        </div>
         <input type="submit" class="btn btn-primary" value="Add Task" />
       </form>
 

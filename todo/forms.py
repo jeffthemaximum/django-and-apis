@@ -17,5 +17,6 @@ class TodoForm(forms.ModelForm):
         widgets = {
             'title' : forms.TextInput(attrs = {'placeholder': 'Title'}),
             'text' : forms.Textarea(attrs = {'placeholder': 'Detailed description'}),
-            'due_date': DateTimeWidget(attrs={'id':"yourdatetimeid", 'placeholder': "Due Date"}, usel10n = True, bootstrap_version=3)
+            'due_date': DateTimeWidget(attrs={'id':"yourdatetimeid", 'placeholder': "Due Date"}, usel10n = True, bootstrap_version=3),
+            'shared_user': forms.SelectMultiple()
         }
