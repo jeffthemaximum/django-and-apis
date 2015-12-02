@@ -16,6 +16,7 @@ get_friendship_context_object_name = lambda: getattr(settings, 'FRIENDSHIP_CONTE
 get_friendship_context_object_list_name = lambda: getattr(settings, 'FRIENDSHIP_CONTEXT_OBJECT_LIST_NAME', 'users')
 
 
+@login_required
 def view_friends(request, username, template_name='friendship/friend/user_list.html'):
     """ View the friends of a user """
     user = get_object_or_404(user_model, username=username)
