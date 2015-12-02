@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Todo
 from .forms import TodoForm
+import pudb
 
 
 def todo_index(request):
@@ -33,19 +34,18 @@ def user_todo(request, username):
     # show box to view completed to-do's
     if request.method == 'POST':
         form = TodoForm(request.POST)
-        if form.is_valid(): 
+        if form.is_valid():
             todo = form.save(commit=False)
             todo.author = request.user
-            if form.completed is True:
-                todo.completed()
             todo.save()
             # requery to get updated stuffs
             todos = get_todos(request)
             completed_todos = get_completed_todos(request)
+            form = TodoForm()
             return render(
                 request,
                 'todo/user_todo.html',
-                {'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+                {'form': form, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
             )
     else:
         todos = get_todos(request)
