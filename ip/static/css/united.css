@@ -6878,3 +6878,14 @@ h3 {
   line-height: 75px;
   text-align: center;
 }
+
+table#friends-table th {
+    padding-right: 20px;
+    vertical-align: bottom;
+    max-width: 250px;
+}
+
+table#friends-table {
+  margin-left:auto; 
+  margin-right:auto;
+}
