@@ -17,12 +17,32 @@ get_friendship_context_object_list_name = lambda: getattr(settings, 'FRIENDSHIP_
 
 
 @login_required
+def friends_index(request, username, template_name='friendship/friends_index.html'):
+    """ User homepage """
+    user = get_object_or_404(user_model, username=username)
+    # friends = Friend.objects.friends(user)
+    return render(request, template_name, {get_friendship_context_object_name(): user, 'username': username})
+
+# # add a new view similar to view_friends that lets users view friends
+# # also need to add url
+# # also need to add template
+# also need to link to page from user_list.html
+
+@login_required
 def view_friends(request, username, template_name='friendship/friend/user_list.html'):
     """ View the friends of a user """
     user = get_object_or_404(user_model, username=username)
     friends = Friend.objects.friends(user)
     return render(request, template_name, {get_friendship_context_object_name(): user, 'friends': friends})
 
+
+@login_required
+def view_user_friends(request, username, template_name='friendship/friend/view_user_list.html'):
+    """ view a users friends """
+    """ need to update so that you can only see all friends if user is friends """
+    user = get_object_or_404(user_model, username=username)
+    friends = Friend.objects.friends(user)
+    return render(request, template_name, {get_friendship_context_object_name(): user, 'friends': friends, 'username': username})
 
 
 @login_required
@@ -85,8 +105,8 @@ def friendship_cancel(request, friendship_request_id):
 @login_required
 def friendship_request_list(request, template_name='friendship/friend/requests_list.html'):
     """ View unread and read friendship requests """
-    # friendship_requests = Friend.objects.requests(request.user)
-    friendship_requests = FriendshipRequest.objects.filter(rejected__isnull=True)
+    friendship_requests = Friend.objects.requests(request.user)
+    # friendship_requests = FriendshipRequest.objects.filter(rejected__isnull=True)
 
     return render(request, template_name, {'requests': friendship_requests})
 
@@ -154,7 +174,9 @@ def follower_remove(request, followee_username, template_name='friendship/follow
     return render(request, template_name, {'followee_username': followee_username})
 
 
+@login_required
 def all_users(request, template_name="friendship/user_actions.html"):
-    users = user_model.objects.all()
+    user_username = request.user.username
+    users = user_model.objects.exclude(username=user_username)
 
     return render(request, template_name, {get_friendship_context_object_list_name(): users})

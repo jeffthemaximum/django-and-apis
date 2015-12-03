@@ -1,3 +1,7 @@
+{% extends 'home/base.html' %}
+
+{% block content %} 
+
 {% load url from future %}
 <ul>
 {% for friendship_request in requests %}
@@ -6,3 +10,4 @@
 </ul>
 <div>no requests :(</div>
 {% endfor %}
+{% endblock %} 

@@ -5,7 +5,7 @@ except ImportError:
 from friendship.views import view_friends, friendship_add_friend, friendship_accept, \
     friendship_reject, friendship_cancel, friendship_request_list, \
     friendship_request_list_rejected, friendship_requests_detail, followers,\
-    following, follower_add, follower_remove, all_users
+    following, follower_add, follower_remove, all_users, view_user_friends, friends_index
 
 urlpatterns = patterns('',
     url(
@@ -14,9 +14,19 @@ urlpatterns = patterns('',
         name='friendship_view_users',
     ),
     url(
-        regex=r'^(?P<username>[\w-]+)/$',
+        regex=r'^index/(?P<username>[\w-]+)/$',
+        view=friends_index,
+        name='friendship_friends_index',
+    ),
+    url(
+        regex=r'^friends/(?P<username>[\w-]+)/$',
         view=view_friends,
         name='friendship_view_friends',
+    ),
+    url(
+        regex=r'^view/(?P<username>[\w-]+)/$',
+        view=view_user_friends,
+        name='friendship_view_user_friends',
     ),
     url(
         regex=r'^add/(?P<to_username>[\w-]+)/$',

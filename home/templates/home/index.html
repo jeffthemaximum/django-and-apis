@@ -85,7 +85,7 @@
               <td>
                 <!-- if user not logged in, show link to register -->
                 {% if request.user.is_authenticated %}
-                  <a href="{% url 'friendship_view_friends' username=username %}">Friendship Link</a>
+                  <a href="{% url 'friendship_friends_index' username=username %}">Friendship Link</a>
                 {% else %}
                   <a href="{% url 'register' %}">Requires registration. Signup here!</a>
                 <!-- if user logged in, show link to friends (need to pass username from view function)-->
