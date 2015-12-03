@@ -34,6 +34,9 @@
                 <li><a href="{% url 'acronym_index' %}">Decode an email from Dave</a></li>
                 <li><a href="{% url 'random_index' %}">Get a truly random number</a></li>
                 <li><a href="{% url 'todo_index' %}">To-do app</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'friendship_view_friends' username=request.user.username %}">Friends</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if request.user.is_authenticated %}
