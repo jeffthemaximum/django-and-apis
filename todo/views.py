@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Todo
 from .forms import TodoForm
+from friendship.models import Friend
 import pudb
 
 
@@ -22,11 +23,33 @@ def get_todos(request):
 
 
 def get_shared_todos(request):
+    # user = request.user
+    # # get all friends of user
+    # friends = Friend.objects.filter(from_user=user)
+    # # get user objects for those friends
+    # users_friends = map(lambda x: x.to_user, friends)
+    # # look up shared to dos with each friend
+    # shared_to_dos = map(lambda x: Todo.objects.filter(shared_user=x).filter(completed=False)[0], users_friends)
+    # return shared_to_dos
     return Todo.objects.filter(shared_user=request.user).filter(completed=False)
+
+
+def find_users_friends(user):
+    return Friend.objects.filter(from_user=user)
+
+
+def convert_friend_objects_to_user_objects(friends):
+    return map(lambda x: x.to_user, friends)
 
 
 def get_completed_todos(request):
     return Todo.objects.filter(author=request.user).filter(completed=True)
+
+
+def get_friends_as_users_for_user(user):
+    pu.db
+    friends = find_users_friends(user)
+    return convert_friend_objects_to_user_objects(friends)
 
 
 def save_form(form, request):
@@ -46,7 +69,8 @@ def user_todo(request, username):
             save_form(form, request)
             todos = get_todos(request)
             completed_todos = get_completed_todos(request)
-            form = TodoForm()
+            form = TodoForm(user=request.user)
+            # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
             return render(
                 request,
                 'todo/user_todo.html',
@@ -55,7 +79,8 @@ def user_todo(request, username):
     else:
         todos = get_todos(request)
         completed_todos = get_completed_todos(request)
-        form = TodoForm()
+        form = TodoForm(user=request.user)
+        # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
     return render(
         request,
         'todo/user_todo.html',

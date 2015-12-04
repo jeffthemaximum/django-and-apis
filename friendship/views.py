@@ -23,10 +23,6 @@ def friends_index(request, username, template_name='friendship/friends_index.htm
     # friends = Friend.objects.friends(user)
     return render(request, template_name, {get_friendship_context_object_name(): user, 'username': username})
 
-# # add a new view similar to view_friends that lets users view friends
-# # also need to add url
-# # also need to add template
-# also need to link to page from user_list.html
 
 @login_required
 def view_friends(request, username, template_name='friendship/friend/user_list.html'):
