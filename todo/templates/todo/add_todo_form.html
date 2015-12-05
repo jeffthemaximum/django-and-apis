@@ -4,7 +4,7 @@
 
 <div class="task-list">
   <h3>Add a task</h3>
-  <form id="todo-form" action="{% url 'user_todo' username=username %}" method="POST">
+  <form id="todo-form" action="{% url 'use_to_do_form' username=username %}" method="POST">
     {% csrf_token %}
     <div class="fieldWrapper">
         {{ form.title.errors }}

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Todo
 from .forms import TodoForm
 from friendship.models import Friend
+from django.contrib.auth.models import User
 import pudb
 
 
@@ -60,6 +61,15 @@ def save_form(form, request):
     todo.save()
 
 
+def instantiate_todo_form_with_friends(request):
+    # gets a list of all a user's friends
+    friends = Friend.objects.filter(from_user=request.user)
+    # converts friend objects to list of friends' usernames
+    friend_users = map(lambda x: x.to_user.username, friends)
+    # gets a list of user objects - the users who are friends with the original user
+    return User.objects.filter(username__in=friend_users)
+
+
 def user_todo(request, username):
     shared_todos = get_shared_todos(request)
     # show box to view completed to-do's
@@ -96,16 +106,17 @@ def use_to_do_form(request, username):
             save_form(form, request)
             todos = get_todos(request)
             completed_todos = get_completed_todos(request)
-            form = TodoForm(user=request.user)
             return render(
                 request,
                 'todo/user_todo.html',
-                {'form': form, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+                {'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
             )
     else:
         todos = get_todos(request)
         completed_todos = get_completed_todos(request)
-        form = TodoForm(user=request.user)
+        form = TodoForm()
+        # sets the shared_user field to only display a user's friends
+        form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
     return render(
         request,
         'todo/add_todo_form.html',
