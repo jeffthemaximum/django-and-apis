@@ -33,3 +33,10 @@ class Todo(models.Model):
         return self.title
 
 # update such that tasks belog to todo's. tasks are what need to be completed in a to do.
+class Task(models.Model):
+    todo = models.ForeignKey(Todo)
+    completed = models.BooleanField(default=False)
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
