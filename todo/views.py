@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Todo
 from .forms import TodoForm
 from friendship.models import Friend
@@ -124,6 +124,20 @@ def use_to_do_form(request, username):
     )
 
 
+def todo_detail(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    user = request.user
+    username = user.username
+    todos = get_todos(request)
+    shared_todos = get_shared_todos(request)
+    completed_todos = get_completed_todos(request)
+    
+    return render(
+        request,
+        'todo/todo_detail.html',
+        {'todo': todo, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+    )
+    
 
 
 
