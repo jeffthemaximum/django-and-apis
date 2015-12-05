@@ -6889,3 +6889,21 @@ table#friends-table {
   margin-left:auto; 
   margin-right:auto;
 }
+
+#wrapper1 {
+  margin-left: 300px;
+}
+#content1 {
+  float: right;
+  width: 100%;
+  background-color: #CCF;
+}
+#sidebar1 {
+  float: left;
+  width: 300px;
+  margin-left: -300px;
+  background-color: #FFA;
+}
+#cleared1 {
+  clear: both;
+}
