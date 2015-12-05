@@ -1,0 +1,35 @@
+{% extends 'todo/base.html' %}
+
+{% block rightdiv %}
+
+<div class="task-list">
+  <h3>Add a task</h3>
+  <form id="todo-form" action="{% url 'user_todo' username=username %}" method="POST">
+    {% csrf_token %}
+    <div class="fieldWrapper">
+        {{ form.title.errors }}
+        {{ form.title }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.text.errors }}
+        {{ form.text }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.due_date.errors }}
+        {{ form.due_date }}
+    </div>
+    <div class="fieldWrapper">
+      <label for="{{ form.shared_user.id_for_label }}">Select users to share task with:</label>
+        {{ form.shared_user.errors }}
+        {{ form.shared_user }}
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary" value="Add Task" />
+  </form>
+
+  <input type="button" class="btn btn-primary" value="Clear Data" />
+
+  <div id="delete-div">Drag Here to Delete</div>
+</div>
+
+{% endblock %}

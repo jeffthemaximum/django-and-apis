@@ -63,6 +63,33 @@ def save_form(form, request):
 def user_todo(request, username):
     shared_todos = get_shared_todos(request)
     # show box to view completed to-do's
+    # if request.method == 'POST':
+    #     form = TodoForm(request.POST)
+    #     if form.is_valid():
+    #         save_form(form, request)
+    #         todos = get_todos(request)
+    #         completed_todos = get_completed_todos(request)
+    #         form = TodoForm(user=request.user)
+    #         # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
+    #         return render(
+    #             request,
+    #             'todo/user_todo.html',
+    #             {'form': form, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+    #         )
+    # else:
+    todos = get_todos(request)
+    completed_todos = get_completed_todos(request)
+    # form = TodoForm(user=request.user)
+        # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
+    return render(
+        request,
+        'todo/user_todo.html',
+        {'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+    )
+
+
+def use_to_do_form(request, username):
+    shared_todos = get_shared_todos(request)
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
@@ -70,7 +97,6 @@ def user_todo(request, username):
             todos = get_todos(request)
             completed_todos = get_completed_todos(request)
             form = TodoForm(user=request.user)
-            # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
             return render(
                 request,
                 'todo/user_todo.html',
@@ -80,9 +106,15 @@ def user_todo(request, username):
         todos = get_todos(request)
         completed_todos = get_completed_todos(request)
         form = TodoForm(user=request.user)
-        # form.fields['shared_user'].queryset = get_friends_as_users_for_user(request.user)
     return render(
         request,
-        'todo/user_todo.html',
+        'todo/add_todo_form.html',
         {'form': form, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
     )
+
+
+
+
+
+
+

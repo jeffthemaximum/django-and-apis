@@ -9,6 +9,10 @@
 
     <!-- Whatever you want in the lefthand side div -->
     <div id="sidebar1">
+      <div class="todo-task">
+        <a href="{% url 'use_to_do_form' username=username %}">Add new To Do list</a>
+    {% csrf_token %}
+      </div>
       <div class="task-list" id="pending">
           <h3>My incomplete tasks</h3>
           <!-- Sample task added manually to check look -->
