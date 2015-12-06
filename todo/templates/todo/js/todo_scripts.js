@@ -1,3 +1,8 @@
 $(document).ready(function() {
-    console.log("Hello from todo scripts1!");
+
+    // get tsk button when clicked!
+    $("#task-button").click(function(event){
+        console.log("button clicked!");
+    });
+
 });
