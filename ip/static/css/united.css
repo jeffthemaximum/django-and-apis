@@ -6907,3 +6907,7 @@ table#friends-table {
 #cleared1 {
   clear: both;
 }
+
+div.task-list {
+  width: 90%;
+}
