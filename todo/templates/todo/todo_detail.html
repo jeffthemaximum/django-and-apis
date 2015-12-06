@@ -5,7 +5,7 @@
 <div class="task-list" id="pending">
     <h3>{{ todo.title }}</h3>
     <div class="todo-task">
-    <div class="task-header"><a href="{% url 'todo_detail' todo.pk %}">{{ todo.title }}</a></div>
+    <div class="task-header"><a href="{% url 'todo_detail' username=username pk=todo.pk %}">{{ todo.title }}</a></div>
     <div class="task-date">Created: {{ todo.created_date }}</div>
     <div class="task-date">Due: {{ todo.due_date }}</div>
     <div class="task-description">{{ todo.text }}</div>

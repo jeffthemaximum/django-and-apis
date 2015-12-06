@@ -124,14 +124,14 @@ def use_to_do_form(request, username):
     )
 
 
-def todo_detail(request, pk):
+def todo_detail(request, username, pk):
     todo = get_object_or_404(Todo, pk=pk)
     user = request.user
     username = user.username
     todos = get_todos(request)
     shared_todos = get_shared_todos(request)
     completed_todos = get_completed_todos(request)
-    
+
     return render(
         request,
         'todo/todo_detail.html',
