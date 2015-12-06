@@ -1,85 +1,30 @@
-{% extends 'home/base.html' %}
+{% extends 'todo/base.html' %}
 
-{% block content %}
-  <div>
-    <h4>Hello, {{ username }}!</h4>
+{% block rightdiv %}
+
+    <div id="content1">
+      
+
+      <div class="task-list" id="completed">
+        <h3>Completed</h3>
+          <!-- Sample task added manually to check look -->
+          {% for completed_todo in completed_todos %}
+          <div class="todo-task">
+            <div class="task-header">{{ completed_todo.title }}</div>
+            <div class="task-date">Created: {{ completed_todo.created_date }}</div>
+            <div class="task-date">Due: {{ completed_todo.due_date }}</div>
+            <div class="task-description">{{ completed_todo.text }}</div>
+          </div>
+          {% empty %}
+            <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
+          {% endfor %}
+      </div>
+
+      
+    </div>
+
+
+    <div id="cleared1"></div>
   </div>
-    <div class="task-list" id="pending">
-        <h3>My incomplete tasks</h3>
-        <!-- Sample task added manually to check look -->
-        {% for todo in todos %}
-        <div class="todo-task">
-          <div class="task-header">{{ todo.title }}</div>
-          <div class="task-date">Created: {{ todo.created_date }}</div>
-          <div class="task-date">Due: {{ todo.due_date }}</div>
-          <div class="task-description">{{ todo.text }}</div>
-        </div>
-        {% empty %}
-          <div class="task-description">No tasks yet. Add some to get started!</div>
-        {% endfor %}
-    </div>
 
-    <div class="task-list" id="inProgress">
-      <h3>Shared incompletes</h3>
-        <!-- Sample task added manually to check look -->
-        {% for shared_todo in shared_todos %}
-        <div class="todo-task">
-          <div class="task-header">{{ shared_todo.title }}</div>
-          <div class="task-date">Author: {{ shared_todo.author }}</div>
-          <div class="task-date">Created: {{ shared_todo.created_date }}</div>
-          <div class="task-date">Due: {{ shared_todo.due_date }}</div>
-          <div class="task-description">{{ shared_todo.text }}</div>
-        </div>
-        {% empty %}
-          <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
-        {% endfor %}
-    </div>
-
-    <div class="task-list" id="completed">
-      <h3>Completed</h3>
-        <!-- Sample task added manually to check look -->
-        {% for completed_todo in completed_todos %}
-        <div class="todo-task">
-          <div class="task-header">{{ completed_todo.title }}</div>
-          <div class="task-date">Created: {{ completed_todo.created_date }}</div>
-          <div class="task-date">Due: {{ completed_todo.due_date }}</div>
-          <div class="task-description">{{ completed_todo.text }}</div>
-        </div>
-        {% empty %}
-          <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
-        {% endfor %}
-    </div>
-
-    <div class="task-list">
-      <h3>Add a task</h3>
-      <form id="todo-form" action="{% url 'user_todo' username=username %}" method="POST">
-        {% csrf_token %}
-        <div class="fieldWrapper">
-            {{ form.title.errors }}
-            {{ form.title }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.text.errors }}
-            {{ form.text }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.due_date.errors }}
-            {{ form.due_date }}
-        </div>
-        <div class="fieldWrapper">
-          <label for="{{ form.shared_user.id_for_label }}">Select users to share task with:</label>
-            {{ form.shared_user.errors }}
-            {{ form.shared_user }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.completed.errors }}
-            {{ form.completed.label_tag}} {{ form.completed }}
-        </div>
-        <input type="submit" class="btn btn-primary" value="Add Task" />
-      </form>
-
-      <input type="button" class="btn btn-primary" value="Clear Data" />
-
-      <div id="delete-div">Drag Here to Delete</div>
-    </div>
 {% endblock %}

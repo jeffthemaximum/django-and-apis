@@ -6879,7 +6879,35 @@ h3 {
   text-align: center;
 }
 
-input#id_completed {
-  width: 0px;
-  height: 0px;
+table#friends-table th {
+    padding-right: 20px;
+    vertical-align: bottom;
+    max-width: 250px;
+}
+
+table#friends-table {
+  margin-left:auto; 
+  margin-right:auto;
+}
+
+#wrapper1 {
+  margin-left: 300px;
+}
+#content1 {
+  float: right;
+  width: 100%;
+  background-color: #CCF;
+}
+#sidebar1 {
+  float: left;
+  width: 300px;
+  margin-left: -300px;
+  background-color: #FFA;
+}
+#cleared1 {
+  clear: both;
+}
+
+div.task-list {
+  width: 90%;
 }
