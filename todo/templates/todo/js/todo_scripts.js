@@ -116,7 +116,7 @@ tasks = {};
 $(document).ready(function() {
     var i = 0;
 
-    //complete task when x badge is clicked on to-do detail
+    //complete task when x badge is clicked on to-do detail for incomplete tasks
     $(document).on('click', '.todo-detail-incomplete', function () {
         task_pk = this.id;
         console.log("delete button clicked for " + task_pk);
@@ -133,12 +133,12 @@ $(document).ready(function() {
                 console.log(json);
                 console.log("success!");
                 //get task title
-                var task_title = $('#li' + task_pk).text().substr(1);
+                var task_title = $('#incomplete-li' + task_pk).text().substr(1);
                 // jquery to move it to complete section
-                $(".complete-tasks").append(
-                    "<li class='list-group-item' id='"+task_pk+"'><span class='badge todo-detail-complete' id='"+task_pk+"' >X</span>"+task_title+"</li>"
+                $(".complete-task-list").append(
+                    "<li class='list-group-item' id='complete-li"+task_pk+"'><span class='badge todo-detail-complete' id='"+task_pk+"' >X</span>"+task_title+"</li>"
                 );
-                $("#li" +task_pk).remove();
+                $("#incomplete-li"+task_pk).remove();
             },
 
             // handle a non-successful response
@@ -148,13 +148,40 @@ $(document).ready(function() {
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
-        
+    });
 
-        // 
-        // remove li from ul
-        // $("#" + this.id).remove();
-        // remove task from array of tasks
-        // delete tasks[this.id];
+    //incomplete task when x badge is clicked on to-do detail for complete tasks
+    $(document).on('click', '.todo-detail-complete', function () {
+        task_pk = this.id;
+        console.log("delete button clicked for " + task_pk);
+        var username = get_username();
+        // ajax call to set it to complete
+        $.ajax({
+            url: "/todo/" + username + "/task_incomplete/" + task_pk + "/",
+            type: "POST",
+            data: {
+                task_pk: this.id
+            },
+
+            success : function(json) {
+                console.log(json);
+                console.log("success!");
+                //get task title
+                var task_title = $('#complete-li' + task_pk).text().substr(1);
+                // jquery to move it to complete section
+                $(".incomplete-task-list").append(
+                    "<li class='list-group-item' id='incomplete-li"+task_pk+"'><span class='badge todo-detail-incomplete' id='"+task_pk+"' >X</span>"+task_title+"</li>"
+                );
+                $("#complete-li" +task_pk).remove();
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
     });
 
 

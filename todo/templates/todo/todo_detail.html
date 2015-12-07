@@ -11,25 +11,23 @@
     <div class="task-description">{{ todo.text }}</div>
 
     <div class="task-header">Incomplete tasks</div>
-    {% for task in incomplete_todo_tasks %}
-        <div class="task-header">
-            <li class='list-group-item' id='li{{ task.pk }}' ><span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
+        <div class="task-header incomplete-tasks">
+            <ul class="incomplete-task-list">
+                {% for task in incomplete_todo_tasks %}
+                <li class='list-group-item' id='incomplete-li{{ task.pk }}' ><span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
+                {% endfor %}
+            </ul>
         </div>
-    {% empty %}
-        <div class="task-description">No tasks yet. Add some now!</div>
-    {% endfor %}
+    
 
     <div class="task-header">Complete tasks</div>
-    {% for task in complete_todo_tasks %}
         <div class="task-header complete-tasks">
-            <li class='list-group-item' id='{{ task.pk }}' >
-                <span class='badge todo-detail-complete' id='{{ task.pk }}' >X</span>
-                    {{ task.title }}
-            </li>
+            <ul class="complete-task-list">
+                {% for task in complete_todo_tasks %}
+                    <li class='list-group-item' id='complete-li{{ task.pk }}' ><span class='badge todo-detail-complete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
+                {% endfor %}
+            </ul>
         </div>
-    {% empty %}
-        <div class="task-description">You haven't complete any tasks yet! Get working slacker!</div>
-    {% endfor %}
 
     <a href="#" class="btn btn-primary btn-xs">Finished?</a> <a href="#" class="btn btn-primary btn-xs">Share?</a> <a href="#" class="btn btn-primary btn-xs">Edit?</a>
     </div>

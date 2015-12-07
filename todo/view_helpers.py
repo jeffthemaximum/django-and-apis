@@ -93,3 +93,12 @@ def complete_task_from_task_pk(request):
         task.completed = True
         task.save()
     return task_pk
+
+
+def incomplete_task_from_task_pk(request):
+    task_pk = request.POST.get('task_pk')
+    task = get_object_or_404(Task, pk=task_pk)
+    if task.completed is not False:
+        task.completed = False
+        task.save()
+    return task_pk
