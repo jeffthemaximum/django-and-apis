@@ -53,15 +53,15 @@ function get_username() {
     var url = window.location.href;
     var urlLength = url.length;
     var first_slash = url.indexOf("do/") + 3;
-    var username = url.slice(first_slash, -5)
+    var username = url.slice(first_slash, -5);
     return username;
 }
 
 function create_todo(tasks) {
     // tastTitle is a string
-    var taskTitle = $("#id_title").val();
+    var todoTitle = $("#id_title").val();
     // taskText is a string
-    var taskText = $("#id_text").val();
+    var todoText = $("#id_text").val();
     // dueDate is a string
     var dueDate = $("input#yourdatetimeid").val();
     // shared_users is an array
@@ -71,22 +71,32 @@ function create_todo(tasks) {
     var username = get_username();
 
     console.log("create todo function is working!");
-    console.log("text: " + taskText);
+    console.log("text: " + todoText);
     $.ajax({
-        url: "todo/" + username + "/add/",
+        url: "",
         type: "POST",
         data: {
-            taskTitle: taskTitle,
-            taskText: taskText,
+            todoTitle: todoTitle,
+            todoText: todoText,
             dueDate: dueDate,
             shared_users: shared_users,
-            username: username
-        }
+            tasks: tasks
+        },
 
         success : function(json) {
-            // redirect to todo_detail
+            console.log(json);
+            console.log("success!");
+            location.href = json.redirect;
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
-    })
+    });
 }
 
 
