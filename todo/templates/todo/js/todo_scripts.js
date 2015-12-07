@@ -132,7 +132,13 @@ $(document).ready(function() {
             success : function(json) {
                 console.log(json);
                 console.log("success!");
-                //location.href = json.redirect;
+                //get task title
+                var task_title = $('#li' + task_pk).text().substr(1);
+                // jquery to move it to complete section
+                $(".complete-tasks").append(
+                    "<li class='list-group-item' id='"+task_pk+"'><span class='badge todo-detail-complete' id='"+task_pk+"' >X</span>"+task_title+"</li>"
+                );
+                $("#li" +task_pk).remove();
             },
 
             // handle a non-successful response
@@ -142,7 +148,7 @@ $(document).ready(function() {
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
-        // jquery to move it to complete section
+        
 
         // 
         // remove li from ul

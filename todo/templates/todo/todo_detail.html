@@ -13,9 +13,7 @@
     <div class="task-header">Incomplete tasks</div>
     {% for task in incomplete_todo_tasks %}
         <div class="task-header">
-            <li class='list-group-item' id='{{ task.pk }}' >
-                <span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>
-                    {{ task.title }}
+            <li class='list-group-item' id='li{{ task.pk }}' ><span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
         </div>
     {% empty %}
         <div class="task-description">No tasks yet. Add some now!</div>
@@ -23,10 +21,11 @@
 
     <div class="task-header">Complete tasks</div>
     {% for task in complete_todo_tasks %}
-        <div class="task-header">
+        <div class="task-header complete-tasks">
             <li class='list-group-item' id='{{ task.pk }}' >
-                <span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>
+                <span class='badge todo-detail-complete' id='{{ task.pk }}' >X</span>
                     {{ task.title }}
+            </li>
         </div>
     {% empty %}
         <div class="task-description">You haven't complete any tasks yet! Get working slacker!</div>
