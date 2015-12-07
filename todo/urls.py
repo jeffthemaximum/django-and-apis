@@ -10,5 +10,10 @@ urlpatterns = [
         views.todo_detail,
         name='todo_detail'
     ),
+    url(
+        r'^(?P<username>\w+)/task_complete/(?P<pk>[0-9]+)/$',
+        views.todo_detail_task_complete,
+        name='todo_detail_task_complete'
+    ),
     url(r'^$', views.todo_index, name="todo_index"),
 ]

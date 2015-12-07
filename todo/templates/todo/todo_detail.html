@@ -13,7 +13,7 @@
     {% for task in todo_tasks %}
         <div class="task-header">
             <li class='list-group-item' id='{{ task.pk }}' >
-                <span class='badge' id='{{ task.pk }}' >X</span>
+                <span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>
                     {{ task.title }}
         </div>
     {% empty %}

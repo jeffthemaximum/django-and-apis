@@ -53,7 +53,7 @@ function get_username() {
     var url = window.location.href;
     var urlLength = url.length;
     var first_slash = url.indexOf("do/") + 3;
-    var username = url.slice(first_slash, -5);
+    var username = url.slice(first_slash, -4);
     return username;
 }
 
@@ -76,7 +76,7 @@ function create_todo(tasks) {
     var shared_users = $("select#id_shared_user").val();
     // tasks is an array
     // username is a string
-    var username = get_username();
+    // var username = get_username();
     // convert tasks objects to array
     tasks = get_keys(tasks);
 
@@ -115,6 +115,43 @@ tasks = {};
 
 $(document).ready(function() {
     var i = 0;
+
+    //complete task when x badge is clicked on to-do detail
+    $(document).on('click', '.todo-detail-incomplete', function () {
+        task_pk = this.id;
+        console.log("delete button clicked for " + task_pk);
+        var username = get_username();
+        // ajax call to set it to complete
+        $.ajax({
+            url: "/todo/" + username + "/task_complete/" + task_pk + "/",
+            type: "POST",
+            data: {
+                task_pk: this.id
+            },
+
+            success : function(json) {
+                console.log(json);
+                console.log("success!");
+                //location.href = json.redirect;
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+        // jquery to move it to complete section
+
+        // 
+        // remove li from ul
+        // $("#" + this.id).remove();
+        // remove task from array of tasks
+        // delete tasks[this.id];
+    });
+
+
     // delete task when X badge is clicked
     $(document).on('click', '.add-form', function () {
         console.log("delete button clicked for " + this.id);
