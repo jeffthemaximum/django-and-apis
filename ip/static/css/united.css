@@ -6910,3 +6910,7 @@ table#friends-table {
 div.task-list {
   width: 90%;
 }
+
+.badge {
+  cursor: pointer;
+}

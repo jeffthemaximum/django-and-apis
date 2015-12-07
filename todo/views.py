@@ -69,9 +69,10 @@ def todo_detail(request, username, pk):
     todos = get_todos(request)
     shared_todos = get_shared_todos(request)
     completed_todos = get_completed_todos(request)
+    todo_tasks = Task.objects.filter(todo__pk=todo.pk)
 
     return render(
         request,
         'todo/todo_detail.html',
-        {'todo': todo, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+        {'todo': todo, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos, 'todo_tasks': todo_tasks}
     )

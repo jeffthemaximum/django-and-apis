@@ -57,6 +57,14 @@ function get_username() {
     return username;
 }
 
+function get_keys(dict) {
+    keys = [];
+    for(var key in dict) {
+        keys.push(dict[key]);
+    }
+    return keys;
+}
+
 function create_todo(tasks) {
     // tastTitle is a string
     var todoTitle = $("#id_title").val();
@@ -69,6 +77,8 @@ function create_todo(tasks) {
     // tasks is an array
     // username is a string
     var username = get_username();
+    // convert tasks objects to array
+    tasks = get_keys(tasks);
 
     console.log("create todo function is working!");
     console.log("text: " + todoText);
@@ -100,15 +110,24 @@ function create_todo(tasks) {
 }
 
 
-tasks = [];
+tasks = {};
 
 
 $(document).ready(function() {
+    var i = 0;
+    // delete task when X badge is clicked
+    $(document).on('click', '.add-form', function () {
+        console.log("delete button clicked for " + this.id);
+        // remove li from ul
+        $("#" + this.id).remove();
+        // remove task from array of tasks
+        delete tasks[this.id];
+    });
 
     // send all tasks to django when form submitted
     $('form#todo-form').on('submit', function(event){
         event.preventDefault();
-        console.log("form submitted!")  // sanity check
+        console.log("form submitted!");  // sanity check
         create_todo(tasks);
     });
 
@@ -129,12 +148,13 @@ $(document).ready(function() {
             $("div#task").removeClass("input-group has-error");
             $("div#task").addClass("input-group");
             // else save the value to some data structure
-            tasks.push(taskDescription);
+            tasks[i] = taskDescription;
             console.log(tasks);
             // clear the contents of test-description text box
             $("#task-description").val("");
             // add html div with task description
-            $('ul.list-group').append('<li class="list-group-item">' + taskDescription + '</li>');
+            $('ul.list-group').append("<li class='list-group-item' id='"+i+"' ><span class='badge add-form' id='"+i+"' >X</span>" + taskDescription + "</li>");
+            i++;
         }
         
     });

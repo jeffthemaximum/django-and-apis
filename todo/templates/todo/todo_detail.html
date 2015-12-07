@@ -9,7 +9,22 @@
     <div class="task-date">Created: {{ todo.created_date }}</div>
     <div class="task-date">Due: {{ todo.due_date }}</div>
     <div class="task-description">{{ todo.text }}</div>
+
+    {% for task in todo_tasks %}
+        <div class="task-header">
+            <li class='list-group-item' id='{{ task.pk }}' >
+                <span class='badge' id='{{ task.pk }}' >X</span>
+                    {{ task.title }}
+        </div>
+    {% empty %}
+        <div class="task-description">No tasks yet. Add some now!</div>
+    {% endfor %}
+
     <a href="#" class="btn btn-primary btn-xs">Finished?</a> <a href="#" class="btn btn-primary btn-xs">Share?</a> <a href="#" class="btn btn-primary btn-xs">Edit?</a>
     </div>
+
+
+
+
 </div>
 {% endblock %}
