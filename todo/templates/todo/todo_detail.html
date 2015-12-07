@@ -10,7 +10,8 @@
     <div class="task-date">Due: {{ todo.due_date }}</div>
     <div class="task-description">{{ todo.text }}</div>
 
-    {% for task in todo_tasks %}
+    <div class="task-header">Incomplete tasks</div>
+    {% for task in incomplete_todo_tasks %}
         <div class="task-header">
             <li class='list-group-item' id='{{ task.pk }}' >
                 <span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>
@@ -18,6 +19,17 @@
         </div>
     {% empty %}
         <div class="task-description">No tasks yet. Add some now!</div>
+    {% endfor %}
+
+    <div class="task-header">Complete tasks</div>
+    {% for task in complete_todo_tasks %}
+        <div class="task-header">
+            <li class='list-group-item' id='{{ task.pk }}' >
+                <span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>
+                    {{ task.title }}
+        </div>
+    {% empty %}
+        <div class="task-description">You haven't complete any tasks yet! Get working slacker!</div>
     {% endfor %}
 
     <a href="#" class="btn btn-primary btn-xs">Finished?</a> <a href="#" class="btn btn-primary btn-xs">Share?</a> <a href="#" class="btn btn-primary btn-xs">Edit?</a>

@@ -1,6 +1,7 @@
 from friendship.models import Friend
 from django.contrib.auth.models import User
 from .models import Task, Todo
+from django.shortcuts import get_object_or_404
 
 
 def get_todos(request):
@@ -83,3 +84,12 @@ def add_tasks_to_to_do(tasks, todo):
             title=task
         )
         new_task.save()
+
+
+def complete_task_from_task_pk(request):
+    task_pk = request.POST.get('task_pk')
+    task = get_object_or_404(Task, pk=task_pk)
+    if task.completed is not True:
+        task.completed = True
+        task.save()
+    return task_pk

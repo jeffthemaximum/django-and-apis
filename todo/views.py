@@ -70,15 +70,33 @@ def todo_detail(request, username, pk):
     shared_todos = get_shared_todos(request)
     completed_todos = get_completed_todos(request)
     # need to filter for complete and incomplete
-    todo_tasks = Task.objects.filter(todo__pk=todo.pk)
+    incomplete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=False)
+    complete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=True)
 
     return render(
         request,
         'todo/todo_detail.html',
-        {'todo': todo, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos, 'todo_tasks': todo_tasks}
+        {
+            'todo': todo,
+            'username': username,
+            'todos': todos,
+            'shared_todos': shared_todos,
+            'completed_todos': completed_todos,
+            'incomplete_todo_tasks': incomplete_todo_tasks,
+            'complete_todo_tasks': complete_todo_tasks
+        }
     )
 
 
 def todo_detail_task_complete(request, username, pk):
-    task_pk = request.POST.get('task_pk')
-    print task_pk
+    # check if request.user.username is same as url username
+    if (username == request.user.username):
+        task_pk = complete_task_from_task_pk(request)
+        print task_pk
+        # make response data dict
+        response_data = {}
+        response_data['result'] = 'Complete task successful!'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
