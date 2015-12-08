@@ -102,3 +102,15 @@ def incomplete_task_from_task_pk(request):
         task.completed = False
         task.save()
     return task_pk
+
+
+def not_user_or_shared_user(user, pk):
+    if user:
+        todo = Todo.objects.filter(pk=pk)[0]
+        if user not in todo.shared_user.all() and (user != todo.author):
+            return True
+        return False
+    return True
+
+
+    return False

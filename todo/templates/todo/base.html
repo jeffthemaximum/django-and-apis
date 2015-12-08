@@ -18,7 +18,7 @@
           <!-- Sample task added manually to check look -->
           {% for todo in todos %}
           <div class="todo-task">
-            <div class="task-header"><a href="{% url 'todo_detail' username=username pk=todo.pk %}">{{ todo.title }}</a></div>
+            <div class="task-header"><a href="{% url 'todo_detail' pk=todo.pk %}">{{ todo.title }}</a></div>
             <div class="task-date">Created: {{ todo.created_date }}</div>
             <div class="task-date">Due: {{ todo.due_date }}</div>
             <div class="task-description">{{ todo.text }}</div>
@@ -33,7 +33,7 @@
           <!-- Sample task added manually to check look -->
           {% for shared_todo in shared_todos %}
           <div class="todo-task">
-            <div class="task-header"><a href="#">{{ shared_todo.title }}</a></div>
+            <div class="task-header"><a href="{% url 'todo_detail' pk=shared_todo.pk %}">{{ shared_todo.title }}</a></div>
             <div class="task-date">Author: {{ shared_todo.author }}</div>
             <div class="task-date">Created: {{ shared_todo.created_date }}</div>
             <div class="task-date">Due: {{ shared_todo.due_date }}</div>

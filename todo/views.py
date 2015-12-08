@@ -3,10 +3,11 @@ from .models import Todo
 from .forms import TodoForm
 from .view_helpers import *
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
 import json
 
 
-def todo_index(request):
+def todo_index(request, username=None):
     # if user is logged in
     if request.user.is_authenticated():
         # get username
@@ -19,6 +20,7 @@ def todo_index(request):
 
 
 def user_todo(request, username):
+    username = request.user.username
     shared_todos = get_shared_todos(request)
     todos = get_todos(request)
     completed_todos = get_completed_todos(request)
@@ -29,8 +31,9 @@ def user_todo(request, username):
     )
 
 
-def use_to_do_form(request, username):
+def use_to_do_form(request, username=None):
     shared_todos = get_shared_todos(request)
+    username = request.user.username
     if request.method == 'POST':
         # save to do with everything except shared_user and tasks
         todo = save_to_do(request)
@@ -43,7 +46,7 @@ def use_to_do_form(request, username):
         response_data = {}
         response_data['result'] = 'Create todo successful!'
         response_data['todo_pk'] = todo.pk
-        response_data['redirect'] = '/todo/' + str(username) + '/' + str(todo.pk)
+        response_data['redirect'] = '/todo/' + str(todo.pk) + '/view/'
 
         return HttpResponse(
             json.dumps(response_data),
@@ -62,14 +65,18 @@ def use_to_do_form(request, username):
     )
 
 
-def todo_detail(request, username, pk):
+def todo_detail(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     user = request.user
+    if user not in todo.shared_user.all() and (user != todo.author):
+        # TODO add flash message to explain error to user
+        # should send to some custom error page other than index
+        return render(request, 'todo/todo_index.html', {})
+
     username = user.username
     todos = get_todos(request)
     shared_todos = get_shared_todos(request)
     completed_todos = get_completed_todos(request)
-    # need to filter for complete and incomplete
     incomplete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=False)
     complete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=True)
 
@@ -88,8 +95,13 @@ def todo_detail(request, username, pk):
     )
 
 
-def todo_detail_task_complete(request, username, pk):
-    # check if request.user.username is same as url username or if user is shared
+def todo_detail_task_complete(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    user = request.user
+    if user not in todo.shared_user.all() and (user != todo.author):
+        # TODO add flash message to explain error to user
+        return render(request, '/')
+
     task_pk = complete_task_from_task_pk(request)
     print task_pk
     # make response data dict
@@ -101,8 +113,13 @@ def todo_detail_task_complete(request, username, pk):
     )
 
 
-def todo_detail_task_incomplete(request, username, pk):
-    # check if request.user.username is same as url username or if user is shared
+def todo_detail_task_incomplete(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    user = request.user
+    if user not in todo.shared_user.all() and (user != todo.author):
+        # TODO add flash message to explain error to user
+        return render(request, '/')
+
     task_pk = incomplete_task_from_task_pk(request)
     print task_pk
     # make response data dict

@@ -120,10 +120,10 @@ $(document).ready(function() {
     $(document).on('click', '.todo-detail-incomplete', function () {
         task_pk = this.id;
         console.log("delete button clicked for " + task_pk);
-        var username = get_username();
+        
         // ajax call to set it to complete
         $.ajax({
-            url: "/todo/" + username + "/task_complete/" + task_pk + "/",
+            url: "/todo/task_complete/" + task_pk + "/",
             type: "POST",
             data: {
                 task_pk: this.id
@@ -154,10 +154,10 @@ $(document).ready(function() {
     $(document).on('click', '.todo-detail-complete', function () {
         task_pk = this.id;
         console.log("delete button clicked for " + task_pk);
-        var username = get_username();
+        
         // ajax call to set it to complete
         $.ajax({
-            url: "/todo/" + username + "/task_incomplete/" + task_pk + "/",
+            url: "/todo/task_incomplete/" + task_pk + "/",
             type: "POST",
             data: {
                 task_pk: this.id
