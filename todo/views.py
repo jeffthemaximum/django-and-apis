@@ -89,28 +89,26 @@ def todo_detail(request, username, pk):
 
 
 def todo_detail_task_complete(request, username, pk):
-    # check if request.user.username is same as url username
-    if (username == request.user.username):
-        task_pk = complete_task_from_task_pk(request)
-        print task_pk
-        # make response data dict
-        response_data = {}
-        response_data['result'] = 'Complete task successful!'
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
+    # check if request.user.username is same as url username or if user is shared
+    task_pk = complete_task_from_task_pk(request)
+    print task_pk
+    # make response data dict
+    response_data = {}
+    response_data['result'] = 'Complete task successful!'
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
 
 
 def todo_detail_task_incomplete(request, username, pk):
-    # check if request.user.username is same as url username
-    if (username == request.user.username):
-        task_pk = incomplete_task_from_task_pk(request)
-        print task_pk
-        # make response data dict
-        response_data = {}
-        response_data['result'] = 'Complete task successful!'
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
+    # check if request.user.username is same as url username or if user is shared
+    task_pk = incomplete_task_from_task_pk(request)
+    print task_pk
+    # make response data dict
+    response_data = {}
+    response_data['result'] = 'Complete task successful!'
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )

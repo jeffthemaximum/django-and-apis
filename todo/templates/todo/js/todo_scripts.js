@@ -195,6 +195,7 @@ $(document).ready(function() {
     });
 
     // send all tasks to django when form submitted
+    // TODO - CHECK FORM BEFORE SUBMISSION!
     $('form#todo-form').on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");  // sanity check
