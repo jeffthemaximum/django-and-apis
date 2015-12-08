@@ -69,6 +69,16 @@ def save_to_do(request):
     return todo
 
 
+def save_edited_to_do(request, pk):
+    todo = Todo.objects.filter(pk=pk)[0]
+    todo.title = request.POST.get('todoTitle')
+    todo.text = request.POST.get('todoText')
+    todo.due_date = request.POST.get('dueDate')
+    todo.shared_user.clear()
+    todo.save()
+    return todo
+
+
 def add_shared_user_to_to_do(shared_users, todo):
     # iterate over shared_users and add one at a time
     for shared_user in shared_users:

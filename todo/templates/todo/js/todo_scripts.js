@@ -109,6 +109,50 @@ function create_todo(tasks) {
     });
 }
 
+function edit_todo(tasks) {
+    // tastTitle is a string
+    var todoTitle = $("#id_title").val();
+    // taskText is a string
+    var todoText = $("#id_text").val();
+    // dueDate is a string
+    var dueDate = $("input#yourdatetimeid").val();
+    // shared_users is an array
+    var shared_users = $("select#id_shared_user").val();
+    // tasks is an array
+    // username is a string
+    // var username = get_username();
+    // convert tasks objects to array
+    tasks = get_keys(tasks);
+
+    console.log("edit todo function is working!");
+    console.log("text: " + todoText);
+    $.ajax({
+        url: "",
+        type: "POST",
+        data: {
+            todoTitle: todoTitle,
+            todoText: todoText,
+            dueDate: dueDate,
+            shared_users: shared_users,
+            tasks: tasks
+        },
+
+        success : function(json) {
+            console.log(json);
+            console.log("success!");
+            location.href = json.redirect;
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
 
 tasks = {};
 
@@ -194,12 +238,20 @@ $(document).ready(function() {
         delete tasks[this.id];
     });
 
-    // send all tasks to django when form submitted
+    // send all tasks to django when add todo form submitted
     // TODO - CHECK FORM BEFORE SUBMISSION!
     $('form#todo-form').on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");  // sanity check
         create_todo(tasks);
+    });
+
+    // send all tasks to django when edit todo form submitted
+    // TODO - CHECK FORM BEFORE SUBMISSION!
+    $('form#edit-todo-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");  // sanity check
+        edit_todo(tasks);
     });
 
     // get task button when clicked!
