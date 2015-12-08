@@ -137,6 +137,9 @@ STATICFILES_FINDERS = (
 )
 
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
 LOGIN_REDIRECT_URL = '/accounts/loggedin/'
 
 import dj_database_url
