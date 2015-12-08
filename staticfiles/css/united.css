@@ -3887,7 +3887,6 @@ tbody.collapse.in {
   position: relative;
   z-index: 2;
   float: left;
-  width: 100%;
   margin-bottom: 0;
 }
 .input-group-lg > .form-control,
@@ -6910,4 +6909,8 @@ table#friends-table {
 
 div.task-list {
   width: 90%;
+}
+
+.badge {
+  cursor: pointer;
 }
