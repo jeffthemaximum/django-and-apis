@@ -11,6 +11,11 @@ urlpatterns = [
         name='todo_detail'
     ),
     url(
+        r'^(?P<pk>[0-9]+)/edit/$',
+        views.edit_to_do,
+        name='edit_to_do'
+    ),
+    url(
         r'^task_complete/(?P<pk>[0-9]+)/$',
         views.todo_detail_task_complete,
         name='todo_detail_task_complete'

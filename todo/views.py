@@ -73,34 +73,29 @@ def todo_detail(request, pk):
         # should send to some custom error page other than index
         return render(request, 'todo/todo_index.html', {})
 
-    username = user.username
-    todos = get_todos(request)
-    shared_todos = get_shared_todos(request)
-    completed_todos = get_completed_todos(request)
-    incomplete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=False)
-    complete_todo_tasks = Task.objects.filter(todo__pk=todo.pk).filter(completed=True)
+    todo_info = get_todo_base_info(todo, request, pk)
 
     return render(
         request,
         'todo/todo_detail.html',
         {
             'todo': todo,
-            'username': username,
-            'todos': todos,
-            'shared_todos': shared_todos,
-            'completed_todos': completed_todos,
-            'incomplete_todo_tasks': incomplete_todo_tasks,
-            'complete_todo_tasks': complete_todo_tasks
+            'username': todo_info['username'],
+            'todos': todo_info['todos'],
+            'shared_todos': todo_info['shared_todos'],
+            'completed_todos': todo_info['completed_todos'],
+            'incomplete_todo_tasks': todo_info['incomplete_todo_tasks'],
+            'complete_todo_tasks': todo_info['complete_todo_tasks']
         }
     )
 
 
 def todo_detail_task_complete(request, pk):
-    todo = get_object_or_404(Todo, pk=pk)
-    user = request.user
-    if user not in todo.shared_user.all() and (user != todo.author):
-        # TODO add flash message to explain error to user
-        return render(request, '/')
+    # todo = get_object_or_404(Todo, pk=pk)
+    # user = request.user
+    # if user not in todo.shared_user.all() and (user != todo.author):
+    #     # TODO add flash message to explain error to user
+    #     return render(request, '/')
 
     task_pk = complete_task_from_task_pk(request)
     print task_pk
@@ -114,11 +109,11 @@ def todo_detail_task_complete(request, pk):
 
 
 def todo_detail_task_incomplete(request, pk):
-    todo = get_object_or_404(Todo, pk=pk)
-    user = request.user
-    if user not in todo.shared_user.all() and (user != todo.author):
-        # TODO add flash message to explain error to user
-        return render(request, '/')
+    # todo = get_object_or_404(Todo, pk=pk)
+    # user = request.user
+    # if user not in todo.shared_user.all() and (user != todo.author):
+    #     # TODO add flash message to explain error to user
+    #     return render(request, '/')
 
     task_pk = incomplete_task_from_task_pk(request)
     print task_pk
@@ -128,4 +123,35 @@ def todo_detail_task_incomplete(request, pk):
     return HttpResponse(
         json.dumps(response_data),
         content_type="application/json"
+    )
+
+
+def edit_to_do(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    user = request.user
+    if user not in todo.shared_user.all() and (user != todo.author):
+        # TODO add flash message to explain error to user
+        # should send to some custom error page other than index
+        return render(request, 'todo/todo_index.html', {})
+
+    todo_info = get_todo_base_info(todo, request, pk)
+
+    data = get_data_for_edit_todo_form(todo)
+
+    form = TodoForm(data, initial=data)
+    # sets the shared_user field to only display a user's friends
+    form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
+    return render(
+        request,
+        'todo/add_todo_form.html',
+        {
+            'todo': todo,
+            'username': todo_info['username'],
+            'todos': todo_info['todos'],
+            'shared_todos': todo_info['shared_todos'],
+            'completed_todos': todo_info['completed_todos'],
+            'incomplete_todo_tasks': todo_info['incomplete_todo_tasks'],
+            'complete_todo_tasks': todo_info['complete_todo_tasks'],
+            'form': form
+        }
     )

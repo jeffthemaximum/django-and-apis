@@ -104,6 +104,36 @@ def incomplete_task_from_task_pk(request):
     return task_pk
 
 
+def get_todo_base_info(todo, request, pk):
+    info = {
+        'user': request.user,
+        'username': request.user.username,
+        'todos': get_todos(request),
+        'shared_todos': get_shared_todos(request),
+        'completed_todos': get_completed_todos(request),
+        'incomplete_todo_tasks': Task.objects.filter(todo__pk=todo.pk).filter(completed=False),
+        'complete_todo_tasks': Task.objects.filter(todo__pk=todo.pk).filter(completed=True)
+    }
+    return info
+
+
+def get_data_for_edit_todo_form(todo):
+    if todo.shared_user.all():
+        shared_user_pks = map(lambda x: x.pk, todo.shared_user.all())
+        data = {
+            'title': todo.title,
+            'text': todo.text,
+            'due_date': todo.due_date,
+            'shared_user': shared_user_pks,
+        }
+    else:
+        data = {
+            'title': todo.title,
+            'text': todo.text,
+            'due_date': todo.due_date,
+        }
+    return data
+
 def not_user_or_shared_user(user, pk):
     if user:
         todo = Todo.objects.filter(pk=pk)[0]
@@ -111,6 +141,3 @@ def not_user_or_shared_user(user, pk):
             return True
         return False
     return True
-
-
-    return False
