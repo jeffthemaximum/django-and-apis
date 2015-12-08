@@ -34,6 +34,7 @@ def user_todo(request, username):
 def use_to_do_form(request, username=None):
     shared_todos = get_shared_todos(request)
     username = request.user.username
+    friend_flag = False
     if request.method == 'POST':
         # save to do with everything except shared_user and tasks
         todo = save_to_do(request)
@@ -58,10 +59,19 @@ def use_to_do_form(request, username=None):
         form = TodoForm()
         # sets the shared_user field to only display a user's friends
         form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
+        if not form.fields['shared_user'].queryset:
+            friend_flag = True
     return render(
         request,
         'todo/add_todo_form.html',
-        {'form': form, 'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+        {
+            'form': form,
+            'username': username,
+            'todos': todos,
+            'shared_todos': shared_todos,
+            'completed_todos': completed_todos,
+            'friend_flag': friend_flag
+        }
     )
 
 
