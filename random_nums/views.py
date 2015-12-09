@@ -27,8 +27,7 @@ def update_frequency_on_all_rows(total_rows):
     # Random_Num.objects.all().update(frequency=(F('count') / total_rows))
     all_random_nums = Random_Num.objects.all()
     for num in all_random_nums:
-        num.frequency = num.count / total_rows
-        num.save()
+        num.update_frequency_count(total_rows)
 
 
 def update_frequency():

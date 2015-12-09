@@ -22,7 +22,7 @@
         {{ form.due_date }}
     </div>
 
-    {% if friend_flag == False %}
+    {% if todo.author_has_friends == True %}
     <div class="fieldWrapper">
       <label for="{{ form.shared_user.id_for_label }}">Select users to share task with:</label>
         {{ form.shared_user.errors }}

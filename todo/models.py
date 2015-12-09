@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from friendship.models import Friend
 
 
 class Todo(models.Model):
@@ -28,6 +29,9 @@ class Todo(models.Model):
     def complete(self):
         self.completed = True
         self.completed_date = timezone.now()
+
+    def author_has_friends(self):
+        return Friend.objects.friends(self.author) != []
 
     def __str__(self):
         return self.title

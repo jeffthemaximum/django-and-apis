@@ -170,7 +170,6 @@ def edit_to_do(request, pk):
     data = get_data_for_edit_todo_form(todo)
     # initializes the form with the data
     form = TodoForm(data, initial=data)
-    # sets the shared_user field to only display a user's friends
     form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
     if not form.fields['shared_user'].queryset:
         friend_flag = True
