@@ -44,10 +44,11 @@ def update_frequency():
 
 
 def update_random_num(random_num):
-    # update count
+    # update count of this number
     number = Random_Num.objects.get(number=random_num)
     number.count += 1
     number.save()
+
     total_rows = update_frequency()
     return [number, total_rows]
 
@@ -67,13 +68,18 @@ def get_all_random_nums():
 def random_index(request):
     random_num = get_random_num_from_api(request)
     exists = Random_Num.objects.filter(number=random_num).exists()
-    # save to db if doesn't exist
     if exists is True:
+        # add one to count in db
         num_data = update_random_num(random_num)
     else:
+        # create new num object in db with count of 1
         num_data = create_new_num(random_num)
+    # get total rows
     total_rows = num_data[1]
-    number = num_data[0]
+    # update fequency on each num object
     update_frequency_on_all_rows(total_rows)
+
+    # get data to send to template
     all_nums = get_all_random_nums()
+    number = num_data[0]
     return render(request, 'random_nums/random_index.html', {'random_num': number, 'all_nums': all_nums})
