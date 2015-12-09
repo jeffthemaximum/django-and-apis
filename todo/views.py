@@ -139,6 +139,7 @@ def todo_detail_task_incomplete(request, pk):
 def edit_to_do(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     user = request.user
+    friend_flag = False
 
     if user not in todo.shared_user.all() and (user != todo.author):
         # TODO add flash message to explain error to user
@@ -171,9 +172,11 @@ def edit_to_do(request, pk):
     form = TodoForm(data, initial=data)
     # sets the shared_user field to only display a user's friends
     form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
+    if not form.fields['shared_user'].queryset:
+        friend_flag = True
     return render(
         request,
-        'todo/add_todo_form.html',
+        'todo/edit_todo_form.html',
         {
             'todo': todo,
             'username': todo_info['username'],
