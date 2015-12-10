@@ -36,7 +36,7 @@
       <label>Tasks</label>
     </div>
 
-    <ul class="list-group">
+    <ul class="list-group added-tasks-in-form">
       <!-- <li class="list-group-item">
         <span class="badge">14</span>
         Cras justo odio
@@ -63,9 +63,11 @@
     </div>
 
     <br>
-    <input type="submit" class="btn btn-primary" value="Add Task" />
+    <input type="submit" class="btn btn-primary" value="Edit Todo" />
 
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+
 
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -76,14 +78,19 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
+              <div class="hidden shared-users">
+                <label>Shared with these peoples</label>
+              </div>
+              <ul class="list-group shared-user-list">
+              </ul>
               <div class="form-group">
                 <label for="inputEmail" class="col-lg-2 control-label" ></label>
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Search for...">
+                      <input type="text" class="form-control" placeholder="Search for..." id="shared-user-email">
                       <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
+                        <button class="btn btn-default" type="button" id="modal-add-shared-user-button">Go!</button>
                       </span>
                     </div><!-- /input-group -->
                   </div><!-- /.col-lg-6 -->
@@ -96,7 +103,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div><!-- /.modal -->
 
 
 

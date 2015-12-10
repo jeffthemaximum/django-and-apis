@@ -145,6 +145,7 @@ def edit_to_do(request, pk):
         return render(request, 'todo/todo_index.html', {})
 
     if request.method == 'POST':
+        pu.db
         # edit to do with everything except shared_user and tasks
         todo = save_edited_to_do(request, pk)
         # add shared_users to todo

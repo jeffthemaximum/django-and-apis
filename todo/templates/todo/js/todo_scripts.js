@@ -117,12 +117,14 @@ function edit_todo(tasks) {
     // dueDate is a string
     var dueDate = $("input#yourdatetimeid").val();
     // shared_users is an array
-    var shared_users = $("select#id_shared_user").val();
+    var shared_users_from_form = $("select#id_shared_user").val();
     // tasks is an array
     // username is a string
     // var username = get_username();
     // convert tasks objects to array
     tasks = get_keys(tasks);
+    // convert shared_users objects from modal to array
+    shared_users_from_modal = get_keys(shared_users_from_modal);
 
     console.log("edit todo function is working!");
     console.log("text: " + todoText);
@@ -133,8 +135,9 @@ function edit_todo(tasks) {
             todoTitle: todoTitle,
             todoText: todoText,
             dueDate: dueDate,
-            shared_users: shared_users,
-            tasks: tasks
+            shared_users_from_form: shared_users_from_form,
+            tasks: tasks,
+            shared_users_from_modal: shared_users_from_modal
         },
 
         success : function(json) {
@@ -153,8 +156,13 @@ function edit_todo(tasks) {
     });
 }
 
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 
 tasks = {};
+shared_users_from_modal = {};
 
 
 $(document).ready(function() {
@@ -251,7 +259,7 @@ $(document).ready(function() {
     $('form#edit-todo-form').on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");  // sanity check
-        edit_todo(tasks);
+        edit_todo(tasks, shared_users_from_modal);
     });
 
     // get task button when clicked!
@@ -276,10 +284,55 @@ $(document).ready(function() {
             // clear the contents of test-description text box
             $("#task-description").val("");
             // add html div with task description
-            $('ul.list-group').append("<li class='list-group-item' id='"+i+"' ><span class='badge add-form' id='"+i+"' >X</span>" + taskDescription + "</li>");
+            $('ul.added-tasks-in-form').append("<li class='list-group-item' id='"+i+"' ><span class='badge add-form' id='"+i+"' >X</span>" + taskDescription + "</li>");
             i++;
         }
         
+    });
+
+    // get modal button that adds a shared user
+    // get email user has entered
+    // check if for blankness
+    // check to see if it's a properly formatted email address
+    // add to list of emails to send to django
+    // add email to modal with option to delete
+    $("#modal-add-shared-user-button").click(function(event){
+        var sharedUserEmail = $("#shared-user-email").val();
+        console.log("shared user button clicked!!");
+        console.log(sharedUserEmail);
+        // reject if blank
+        var validEmail = validateEmail(sharedUserEmail);
+
+        if (sharedUserEmail == "" || !validEmail) {
+            console.log("error with email!");
+
+            /*$("div#task.input-group").addClass("input-group has-error");*/
+        } else {
+            //unhide hidden label
+            $("div.shared-users").addClass("unhidden");
+            $("div.shared-users").removeClass("hidden");
+            // undo error input box
+            $("div#task").removeClass("input-group has-error");
+            $("div#task").addClass("input-group");
+            // else save the value to some data structure
+            shared_users_from_modal["shared" + i] = sharedUserEmail;
+            console.log(shared_users_from_modal);
+            // clear the contents of test-description text box
+            $("#shared-user-email").val("");
+            // add html div with task description
+            $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+i+"' ><span class='badge add-form-shared-user' id='shared"+i+"' >X</span>" + sharedUserEmail + "</li>");
+            i++;
+        }
+        
+    });
+
+    // delete shared email when X badge is clicked in modal
+    $(document).on('click', '.add-form-shared-user', function () {
+        console.log("delete button clicked for " + this.id);
+        // remove li from ul
+        $("#" + this.id).remove();
+        // remove task from array of tasks
+        delete shared_users_from_modal[this.id];
     });
 
     // handle modal submission on edit and add form
