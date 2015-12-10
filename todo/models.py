@@ -31,6 +31,7 @@ class Todo(models.Model):
         self.completed_date = timezone.now()
 
     def author_has_friends(self):
+        # returns true is author has friends, else false
         return Friend.objects.friends(self.author) != []
 
     def __str__(self):
