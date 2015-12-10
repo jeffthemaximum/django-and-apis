@@ -282,4 +282,15 @@ $(document).ready(function() {
         
     });
 
+    // handle modal submission on edit and add form
+    $("#myModal").on("hidden.bs.modal", function() {
+        console.log("Modal clicked!");
+    });
+
+    $('#modal-submit').click(function(){
+         /* when the submit button in the modal is clicked, submit the form */
+        console.log('submitting');
+        
+    });
+
 });

@@ -5952,7 +5952,6 @@ button.close {
   overflow-y: auto;
 }
 .modal-dialog {
-  position: relative;
   width: auto;
   margin: 10px;
 }
@@ -6830,14 +6829,14 @@ div.content {
   padding-bottom: 15px;
 }
 
-.task-list input, .task-list textarea {
+/*.task-list input, .task-list textarea {
   width: 240px;
   margin: 1px 5px;
-}
+}*/
 
-.task-list input {
+/*.task-list input {
   height: 30px;
-}
+}*/
 
 .todo-task {
   border-radius: 5px;
