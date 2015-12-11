@@ -82,7 +82,7 @@ def save_edited_to_do(request, pk):
 def add_shared_user_to_to_do(shared_users, todo):
     # iterate over shared_users and add one at a time
     for shared_user in shared_users:
-        todo.shared_user = shared_user
+        todo.shared_user = str(shared_user.pk)
     todo.save()
 
 
@@ -156,4 +156,4 @@ def not_user_or_shared_user(user, pk):
 
 def convert_shared_modal_email_list_to_list_of_user_objects(list_of_emails):
     ''' takes a list of email address and converts it to a list of user objects '''
-    return map(lambda x: User.object.get(email=x), list_of_emails)
+    return map(lambda x: User.objects.get(email=x), list_of_emails)
