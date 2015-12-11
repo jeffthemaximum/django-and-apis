@@ -201,7 +201,6 @@ def check_email(request):
         return HttpResponse(
             json.dumps(errors),
             content_type="application/json",
-            status=404
         )
 
     if Friend.objects.are_friends(request.user, user):
@@ -215,11 +214,9 @@ def check_email(request):
         return HttpResponse(
             json.dumps(errors),
             content_type="application/json",
-            status=404
         )
     errors = "some unknown error"
     return HttpResponse(
         json.dumps(errors),
         content_type="application/json",
-        status=404
     )

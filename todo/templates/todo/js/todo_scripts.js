@@ -162,14 +162,14 @@ function validateEmail(email) {
 }
 
 function checkIfFriend(email) {
-    $.ajax({
+    return $.ajax({
         url: "/todo/check_email/",
         type: "POST",
         data: {
             email: email
-        },
+        }
 
-        success : function(json) {
+        /*success : function(json) {
             debugger;
             console.log(json);
             console.log("email is friends with user!");
@@ -183,7 +183,7 @@ function checkIfFriend(email) {
             console.log("email isn't user or email isn't friends with user :(");
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             return false;
-        }
+        }*/
     });
 }
 
@@ -329,27 +329,35 @@ $(document).ready(function() {
         // reject if blank
         var validEmail = validateEmail(sharedUserEmail);
         // reject if not a friend with user
-        var friendWithUser = checkIfFriend(sharedUserEmail);
-
+        var promise = checkIfFriend(sharedUserEmail);
         if (sharedUserEmail == "" || !validEmail) {
             console.log("error with email!");
+            // print some error to the form ideally
 
             /*$("div#task.input-group").addClass("input-group has-error");*/
         } else {
-            //unhide hidden label
-            $("div.shared-users").addClass("unhidden");
-            $("div.shared-users").removeClass("hidden");
-            // undo error input box
-            $("div#task").removeClass("input-group has-error");
-            $("div#task").addClass("input-group");
-            // else save the value to some data structure
-            shared_users_from_modal["shared" + i] = sharedUserEmail;
-            console.log(shared_users_from_modal);
-            // clear the contents of test-description text box
-            $("#shared-user-email").val("");
-            // add html div with task description
-            $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+i+"' ><span class='badge add-form-shared-user' id='shared"+i+"' >X</span>" + sharedUserEmail + "</li>");
-            i++;
+            promise.success(function (data){
+                var friendsWithUser = data;
+                if (friendsWithUser != "valid email and users are friends") {
+                    console.log("invalid email or users aren't friends :(");
+                    //print some error to the form ideally
+                } else {
+                    //unhide hidden label
+                    $("div.shared-users").addClass("unhidden");
+                    $("div.shared-users").removeClass("hidden");
+                    // undo error input box
+                    $("div#task").removeClass("input-group has-error");
+                    $("div#task").addClass("input-group");
+                    // else save the value to some data structure
+                    shared_users_from_modal["shared" + i] = sharedUserEmail;
+                    console.log(shared_users_from_modal);
+                    // clear the contents of test-description text box
+                    $("#shared-user-email").val("");
+                    // add html div with task description
+                    $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+i+"' ><span class='badge add-form-shared-user' id='shared"+i+"' >X</span>" + sharedUserEmail + "</li>");
+                    i++;
+                }
+            })
         }
         
     });
