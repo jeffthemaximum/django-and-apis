@@ -161,6 +161,32 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+function checkIfFriend(email) {
+    $.ajax({
+        url: "/todo/check_email/",
+        type: "POST",
+        data: {
+            email: email
+        },
+
+        success : function(json) {
+            debugger;
+            console.log(json);
+            console.log("email is friends with user!");
+            return true;
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            debugger;
+            console.log(json);
+            console.log("email isn't user or email isn't friends with user :(");
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            return false;
+        }
+    });
+}
+
 tasks = {};
 shared_users_from_modal = {};
 
@@ -302,6 +328,8 @@ $(document).ready(function() {
         console.log(sharedUserEmail);
         // reject if blank
         var validEmail = validateEmail(sharedUserEmail);
+        // reject if not a friend with user
+        var friendWithUser = checkIfFriend(sharedUserEmail);
 
         if (sharedUserEmail == "" || !validEmail) {
             console.log("error with email!");

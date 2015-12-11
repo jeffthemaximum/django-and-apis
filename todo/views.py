@@ -4,7 +4,9 @@ from .forms import TodoForm
 from .view_helpers import *
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 import json
+import pudb
 
 
 def todo_index(request, username=None):
@@ -137,7 +139,6 @@ def todo_detail_task_incomplete(request, pk):
 def edit_to_do(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     user = request.user
-    friend_flag = False
 
     if user not in todo.shared_user.all() and (user != todo.author):
         # TODO add flash message to explain error to user
@@ -145,11 +146,15 @@ def edit_to_do(request, pk):
         return render(request, 'todo/todo_index.html', {})
 
     if request.method == 'POST':
-        pu.db
         # edit to do with everything except shared_user and tasks
         todo = save_edited_to_do(request, pk)
+        # shared_users_from_modal come as list of emails. Need to convert it to list of users.
+        # Checking to see if emails are valid users all happens in js via AJAX calls before
+        # list of emails gets to django. So there's no need to check email addresses here.
+        shared_users = convert_shared_modal_email_list_to_list_of_user_objects(
+            request.POST.getlist('shared_users_from_modal[]'))
         # add shared_users to todo
-        add_shared_user_to_to_do(request.POST.getlist('shared_users[]'), todo)
+        add_shared_user_to_to_do(shared_users, todo)
         # add tasks to todo
         add_tasks_to_to_do(request.POST.getlist('tasks[]'), todo)
 
@@ -184,4 +189,37 @@ def edit_to_do(request, pk):
             'all_tasks': Task.objects.filter(todo=todo),
             'form': form
         }
+    )
+
+
+def check_email(request):
+    email = request.POST.get('email')
+    try:
+        user = User.objects.get(email=email)
+    except:
+        errors = "Not a valid user email address"
+        return HttpResponse(
+            json.dumps(errors),
+            content_type="application/json",
+            status=404
+        )
+
+    if Friend.objects.are_friends(request.user, user):
+        success = "valid email and users are friends"
+        return HttpResponse(
+            json.dumps(success),
+            content_type="application/json"
+        )
+    else:
+        errors = "users are not friends"
+        return HttpResponse(
+            json.dumps(errors),
+            content_type="application/json",
+            status=404
+        )
+    errors = "some unknown error"
+    return HttpResponse(
+        json.dumps(errors),
+        content_type="application/json",
+        status=404
     )

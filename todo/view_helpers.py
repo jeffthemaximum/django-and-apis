@@ -144,6 +144,7 @@ def get_data_for_edit_todo_form(todo):
         }
     return data
 
+
 def not_user_or_shared_user(user, pk):
     if user:
         todo = Todo.objects.filter(pk=pk)[0]
@@ -151,3 +152,8 @@ def not_user_or_shared_user(user, pk):
             return True
         return False
     return True
+
+
+def convert_shared_modal_email_list_to_list_of_user_objects(list_of_emails):
+    ''' takes a list of email address and converts it to a list of user objects '''
+    return map(lambda x: User.object.get(email=x), list_of_emails)
