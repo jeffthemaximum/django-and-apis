@@ -82,6 +82,12 @@
                 <label>Shared with these peoples</label>
               </div>
               <ul class="list-group shared-user-list">
+                {% for user in shared_users %}
+                  <li class='list-group-item' id='shared{{ task.pk }}' >
+                    <span class='badge add-form-shared-user' id='shared{{ task.pk }}' >X</span>
+                    {{ user.email }}
+                  </li>
+                {% endfor %}
               </ul>
               <div class="form-group">
                 <label for="inputEmail" class="col-lg-2 control-label" ></label>

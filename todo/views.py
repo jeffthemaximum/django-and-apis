@@ -186,6 +186,7 @@ def edit_to_do(request, pk):
             'completed_todos': todo_info['completed_todos'],
             'incomplete_todo_tasks': todo_info['incomplete_todo_tasks'],
             'complete_todo_tasks': todo_info['complete_todo_tasks'],
+            'shared_users': data['shared_users'],
             'all_tasks': Task.objects.filter(todo=todo),
             'form': form
         }

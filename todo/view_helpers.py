@@ -129,18 +129,19 @@ def get_todo_base_info(todo, request, pk):
 
 def get_data_for_edit_todo_form(todo):
     if todo.shared_user.all():
-        shared_user_pks = map(lambda x: x.pk, todo.shared_user.all())
+        shared_users = todo.shared_user.all()
         data = {
             'title': todo.title,
             'text': todo.text,
             'due_date': todo.due_date,
-            'shared_user': shared_user_pks,
+            'shared_users': shared_users
         }
     else:
         data = {
             'title': todo.title,
             'text': todo.text,
             'due_date': todo.due_date,
+            'shared_users': None
         }
     return data
 
