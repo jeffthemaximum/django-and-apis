@@ -447,9 +447,9 @@ $(document).ready(function() {
     add_task(); // edit-form & add-form
     submit_edited_todo(); // edit-form
     //put modal code in seperate section
-    delete_task();
-    add_shared_user_to_todo();
-    delete_shared_user_from_todo();
+    delete_task(); // edit form $ add-form
+    add_shared_user_to_todo(); // edit-form & add-form
+    delete_shared_user_from_todo(); // edit-form & add-form
 
     // send all tasks to django when add todo form submitted
     // TODO - CHECK FORM BEFORE SUBMISSION!
