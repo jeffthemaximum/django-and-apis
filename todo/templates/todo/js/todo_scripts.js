@@ -73,7 +73,9 @@ function create_todo(tasks) {
     // dueDate is a string
     var dueDate = $("input#yourdatetimeid").val();
     // shared_users is an array
-    var shared_users = $("select#id_shared_user").val();
+    var shared_users_from_form = $("select#id_shared_user").val();
+    // convert shared_users objects from modal to array
+    shared_users_from_modal = get_keys(shared_users_from_modal);
     // tasks is an array
     // username is a string
     // var username = get_username();
@@ -89,8 +91,9 @@ function create_todo(tasks) {
             todoTitle: todoTitle,
             todoText: todoText,
             dueDate: dueDate,
-            shared_users: shared_users,
-            tasks: tasks
+            shared_users_from_form: shared_users_from_form,
+            tasks: tasks,
+            shared_users_from_modal: shared_users_from_modal
         },
 
         success : function(json) {
@@ -439,10 +442,10 @@ $(document).ready(function() {
     // in edit_todo_form
     // toggle complete/incomplete tasks
     // add new tasks
-    complete_task();
-    incomplete_task();
-    add_task();
-    submit_edited_todo();
+    complete_task(); // edit-form
+    incomplete_task(); // edit-form
+    add_task(); // edit-form & add-form
+    submit_edited_todo(); // edit-form
     //put modal code in seperate section
     delete_task();
     add_shared_user_to_todo();
@@ -453,7 +456,7 @@ $(document).ready(function() {
     $('form#todo-form').on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");  // sanity check
-        create_todo(tasks);
+        create_todo(tasks, shared_users_from_modal);
     });
 
     // send all tasks to django when edit todo form submitted

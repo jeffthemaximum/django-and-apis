@@ -40,8 +40,13 @@ def use_to_do_form(request, username=None):
     if request.method == 'POST':
         # save to do with everything except shared_user and tasks
         todo = save_to_do(request)
+        # shared_users_from_modal come as list of emails. Need to convert it to list of users.
+        # Checking to see if emails are valid users all happens in js via AJAX calls before
+        # list of emails gets to django. So there's no need to check email addresses here.
+        shared_users = convert_shared_modal_email_list_to_list_of_user_objects(
+            request.POST.getlist('shared_users_from_modal[]'))
         # add shared_users to todo
-        add_shared_user_to_to_do(request.POST.getlist('shared_users[]'), todo)
+        add_shared_user_to_to_do(shared_users, todo)
         # add tasks to todo
         add_tasks_to_to_do(request.POST.getlist('tasks[]'), todo)
 
