@@ -3,7 +3,7 @@
 {% block rightdiv %}
 
 <div class="task-list">
-  <h3>Add a task</h3>
+  <h3>Edit your todo</h3>
   <form id="edit-todo-form" action="{% url 'use_to_do_form' username=username %}" method="POST">
     {% csrf_token %}
 

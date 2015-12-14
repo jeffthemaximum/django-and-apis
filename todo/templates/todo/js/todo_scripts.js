@@ -240,17 +240,12 @@ function deleteSharedUserFromTodo(weird_user_id) {
     });
 }
 
-tasks = {};
-shared_users_from_modal = {};
 
-
-$(document).ready(function() {
-    var i = 0;
-
+function complete_task() {
     //complete task when x badge is clicked on to-do detail for incomplete tasks
     $(document).on('click', '.todo-detail-incomplete', function () {
         task_pk = this.id;
-        console.log("delete button clicked for " + task_pk);
+        console.log("complete task button clicked for " + task_pk);
         
         // ajax call to set it to complete
         $.ajax({
@@ -280,11 +275,13 @@ $(document).ready(function() {
             }
         });
     });
+}
 
+function incomplete_task() {
     //incomplete task when x badge is clicked on to-do detail for complete tasks
     $(document).on('click', '.todo-detail-complete', function () {
         task_pk = this.id;
-        console.log("delete button clicked for " + task_pk);
+        console.log("incomplete task button clicked for " + task_pk);
         
         // ajax call to set it to complete
         $.ajax({
@@ -314,8 +311,10 @@ $(document).ready(function() {
             }
         });
     });
+}
 
 
+function delete_task() {
     // delete task when X badge is clicked
     $(document).on('click', '.add-form', function () {
         console.log("delete button clicked for " + this.id);
@@ -328,23 +327,9 @@ $(document).ready(function() {
         // remove task from array of tasks
         delete tasks[this.id];
     });
+}
 
-    // send all tasks to django when add todo form submitted
-    // TODO - CHECK FORM BEFORE SUBMISSION!
-    $('form#todo-form').on('submit', function(event){
-        event.preventDefault();
-        console.log("form submitted!");  // sanity check
-        create_todo(tasks);
-    });
-
-    // send all tasks to django when edit todo form submitted
-    // TODO - CHECK FORM BEFORE SUBMISSION!
-    $('form#edit-todo-form').on('submit', function(event){
-        event.preventDefault();
-        console.log("form submitted!");  // sanity check
-        edit_todo(tasks, shared_users_from_modal);
-    });
-
+function add_task() {
     // get task button when clicked!
     $("#task-button").click(function(event){
         var taskDescription = $("#task-description").val();
@@ -372,7 +357,9 @@ $(document).ready(function() {
         }
         
     });
+}
 
+function add_shared_user_to_todo() {
     // get modal button that adds a shared user
     // get email user has entered
     // check if for blankness
@@ -411,14 +398,16 @@ $(document).ready(function() {
                     // clear the contents of test-description text box
                     $("#shared-user-email").val("");
                     // add html div with task description
-                    $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+i+"' ><span class='badge add-form-shared-user' id='shared"+i+"' >X</span>" + sharedUserEmail + "</li>");
-                    i++;
+                    $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+j+"' ><span class='badge add-form-shared-user' id='shared"+j+"' >X</span>" + sharedUserEmail + "</li>");
+                    j++;
                 }
             });
         }
         
     });
+}
 
+function delete_shared_user_from_todo() {
     // delete shared email when X badge is clicked in modal
     $(document).on('click', '.add-form-shared-user', function () {
         console.log("delete button clicked for " + this.id);
@@ -430,6 +419,48 @@ $(document).ready(function() {
         // remove task from array of tasks
         delete shared_users_from_modal[this.id];
     });
+}
+
+function submit_edited_todo() {
+    $('form#edit-todo-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");  // sanity check
+        edit_todo(tasks, shared_users_from_modal);
+    });
+}
+
+
+tasks = {};
+shared_users_from_modal = {};
+i = 0;
+j = 0;
+
+$(document).ready(function() {
+    // in edit_todo_form
+    // toggle complete/incomplete tasks
+    // add new tasks
+    complete_task();
+    incomplete_task();
+    add_task();
+    submit_edited_todo();
+    //put modal code in seperate section
+    delete_task();
+    add_shared_user_to_todo();
+    delete_shared_user_from_todo();
+
+    // send all tasks to django when add todo form submitted
+    // TODO - CHECK FORM BEFORE SUBMISSION!
+    $('form#todo-form').on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");  // sanity check
+        create_todo(tasks);
+    });
+
+    // send all tasks to django when edit todo form submitted
+    // TODO - CHECK FORM BEFORE SUBMISSION!
+
+
+
 
     // handle modal submission on edit and add form
     $("#myModal").on("hidden.bs.modal", function() {
