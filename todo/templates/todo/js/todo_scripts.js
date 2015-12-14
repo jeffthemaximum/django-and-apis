@@ -187,6 +187,59 @@ function checkIfFriend(email) {
     });
 }
 
+function deleteTaskFromTodo(task_pk) {
+    $.ajax({
+        url: "/todo/delete_task/" + task_pk + "/",
+        type: "POST",
+        data: {
+            task_pk: task_pk
+        },
+
+        success : function(json) {
+            console.log(json);
+            console.log("js says success on task delete!!");
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(json);
+            console.log("js says u failed to delete task :(");
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
+
+function get_num(numsAndLetters) {
+    return numsAndLetters.replace( /^\D+/g, '');
+}
+
+
+function deleteSharedUserFromTodo(weird_user_id) {
+    var todo_pk = $('.todo-pk').text().trim();
+    var user_id = get_num(weird_user_id);
+    $.ajax({
+        url: "/todo/delete_shared_user/",
+        type: "POST",
+        data: {
+            user_id: user_id,
+            todo_pk: todo_pk
+        },
+
+        success : function(json) {
+            console.log(json);
+            console.log("js says success on shared_user delete!!");
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(json);
+            console.log("js says u failed to shared_user delete :(");
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
 tasks = {};
 shared_users_from_modal = {};
 
@@ -268,6 +321,10 @@ $(document).ready(function() {
         console.log("delete button clicked for " + this.id);
         // remove li from ul
         $("#" + this.id).remove();
+        //call django to delete task from database
+        if (!(this.id in tasks)) {
+            deleteTaskFromTodo(this.id);
+        }
         // remove task from array of tasks
         delete tasks[this.id];
     });
@@ -357,7 +414,7 @@ $(document).ready(function() {
                     $('ul.shared-user-list').append("<li class='list-group-item' id='shared"+i+"' ><span class='badge add-form-shared-user' id='shared"+i+"' >X</span>" + sharedUserEmail + "</li>");
                     i++;
                 }
-            })
+            });
         }
         
     });
@@ -367,6 +424,9 @@ $(document).ready(function() {
         console.log("delete button clicked for " + this.id);
         // remove li from ul
         $("#" + this.id).remove();
+        if (!(this.id in shared_users_from_modal)) {
+            deleteSharedUserFromTodo(this.id);
+        }
         // remove task from array of tasks
         delete shared_users_from_modal[this.id];
     });

@@ -25,6 +25,18 @@ urlpatterns = [
         name='todo_detail_task_incomplete'
     ),
     url(
+        r'^delete_task/(?P<pk>[0-9]+)/$',
+        views.delete_task,
+        name='delete_task'
+    ),
+
+    url(
+        r'^delete_shared_user/$',
+        views.delete_shared_user,
+        name='delete_shared_user'
+    ),
+
+    url(
         r'^check_email/$',
         views.check_email,
         name='check_email'

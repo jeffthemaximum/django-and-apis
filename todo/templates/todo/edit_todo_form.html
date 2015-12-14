@@ -83,8 +83,8 @@
               </div>
               <ul class="list-group shared-user-list">
                 {% for user in shared_users %}
-                  <li class='list-group-item' id='shared{{ task.pk }}' >
-                    <span class='badge add-form-shared-user' id='shared{{ task.pk }}' >X</span>
+                  <li class='list-group-item' id='shared{{ user.pk }}' >
+                    <span class='badge add-form-shared-user' id='shared{{ user.pk }}' >X</span>
                     {{ user.email }}
                   </li>
                 {% endfor %}
@@ -109,6 +109,9 @@
           </div>
         </div>
       </div>
+    <div class="hidden todo-pk">
+      <p>{{ todo.pk }}</p>
+    </div>
     </div><!-- /.modal -->
 
 

@@ -136,6 +136,28 @@ def todo_detail_task_incomplete(request, pk):
     )
 
 
+def delete_task(request, pk):
+    todo_pk = delete_task_from_task_pk(request)
+    print todo_pk
+    response_data = {}
+    response_data['result'] = 'delete shared user from todo successful!'
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+
+def delete_shared_user(request):
+    user_pk = delete_shared_user_from_task(request)
+    print user_pk
+    response_data = {}
+    response_data['result'] = 'delete shared_user successful!'
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type="application/json"
+    )
+
+
 def edit_to_do(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     user = request.user

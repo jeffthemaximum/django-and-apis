@@ -114,6 +114,22 @@ def incomplete_task_from_task_pk(request):
     return task_pk
 
 
+def delete_task_from_task_pk(request):
+    task_pk = request.POST.get('task_pk')
+    task = get_object_or_404(Task, pk=task_pk)
+    task.delete()
+    return task_pk
+
+
+def delete_shared_user_from_task(request):
+    user_id = request.POST.get('user_id')
+    todo_pk = request.POST.get('todo_pk')
+    user = get_object_or_404(User, pk=user_id)
+    todo = get_object_or_404(Todo, pk=todo_pk)
+    todo.shared_user.remove(user)
+    return todo_pk
+
+
 def get_todo_base_info(todo, request, pk):
     info = {
         'user': request.user,
