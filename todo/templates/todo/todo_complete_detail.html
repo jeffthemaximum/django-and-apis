@@ -1,0 +1,52 @@
+{% extends 'todo/base.html' %}
+
+{% block rightdiv %}
+
+<div class="task-list" id="pending">
+    <h3>{{ todo.title }}</h3>
+    <div class="todo-task">
+        <div>
+            <p>This task is marked as complete.</p>
+            <table class="table">
+                <tr>
+                    <td>
+                        <a href="{% url 'todo_incomplete' pk=todo.pk %}" class="btn btn-primary btn-lg">Mark as Incomplete</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'todo_delete' pk=todo.pk %}" class="btn btn-primary btn-lg">Delete Forever</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="task-header"><a href="{% url 'todo_detail' pk=todo.pk %}">{{ todo.title }}</a></div>
+        <div class="task-date">Created: {{ todo.created_date }}</div>
+        <div class="task-date">Due: {{ todo.due_date }}</div>
+        <div class="task-description">{{ todo.text }}</div>
+
+        <div class="task-header">Incomplete tasks</div>
+            <div class="task-header incomplete-tasks">
+                <ul class="incomplete-task-list">
+                    {% for task in incomplete_todo_tasks %}
+                    <li class='list-group-item' id='incomplete-li{{ task.pk }}' ><span class='badge todo-detail-incomplete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        
+
+        <div class="task-header">Complete tasks</div>
+            <div class="task-header complete-tasks">
+                <ul class="complete-task-list">
+                    {% for task in complete_todo_tasks %}
+                        <li class='list-group-item' id='complete-li{{ task.pk }}' ><span class='badge todo-detail-complete' id='{{ task.pk }}' >X</span>{{ task.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        <a href="{% url 'todo_done' pk=todo.pk %}" class="btn btn-primary btn-xs">Mark as done?</a>  <a href="{% url 'edit_to_do' pk=todo.pk %}" class="btn btn-primary btn-xs">Edit?</a>
+    </div>
+
+
+
+
+</div>
+{% endblock %}

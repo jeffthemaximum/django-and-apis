@@ -13,21 +13,19 @@
         <a href="{% url 'use_to_do_form' username=username %}">Add new To Do list</a>
     {% csrf_token %}
       </div>
+
       <div class="task-list" id="pending">
           <h3>My incomplete tasks</h3>
           <!-- Sample task added manually to check look -->
           {% for todo in todos %}
           <div class="todo-task">
             <div class="task-header"><a href="{% url 'todo_detail' pk=todo.pk %}">{{ todo.title }}</a></div>
-            <div class="task-date">Created: {{ todo.created_date }}</div>
-            <div class="task-date">Due: {{ todo.due_date }}</div>
-            <div class="task-description">{{ todo.text }}</div>
-            <a href="#" class="btn btn-primary btn-xs">Finished?</a> <a href="#" class="btn btn-primary btn-xs">Share?</a>
           </div>
           {% empty %}
             <div class="task-description">No tasks yet. Add some to get started!</div>
           {% endfor %}
       </div>
+
       <div class="task-list" id="inProgress">
         <h3>Shared incompletes</h3>
           <!-- Sample task added manually to check look -->
@@ -35,9 +33,18 @@
           <div class="todo-task">
             <div class="task-header"><a href="{% url 'todo_detail' pk=shared_todo.pk %}">{{ shared_todo.title }}</a></div>
             <div class="task-date">Author: {{ shared_todo.author }}</div>
-            <div class="task-date">Created: {{ shared_todo.created_date }}</div>
-            <div class="task-date">Due: {{ shared_todo.due_date }}</div>
-            <div class="task-description">{{ shared_todo.text }}</div>
+          </div>
+          {% empty %}
+            <div class="task-description">No shared tasks yet. Make some friends to get started!</div>
+          {% endfor %}
+      </div>
+
+      <div class="task-list" id="inProgress">
+        <h3>Completed Tasks</h3>
+          <!-- Sample task added manually to check look -->
+          {% for todo in completed_todos %}
+          <div class="todo-task">
+            <div class="task-header"><a href="{% url 'todo_complete_detail' pk=todo.pk %}">{{ todo.title }}</a></div>
           </div>
           {% empty %}
             <div class="task-description">No shared tasks yet. Make some friends to get started!</div>

@@ -41,6 +41,27 @@ urlpatterns = [
         views.check_email,
         name='check_email'
     ),
+    url(
+        r'^todo_done/(?P<pk>[0-9]+)/$',
+        views.todo_done,
+        name='todo_done'
+    ),
+    url(
+        r'^todo_complete_detail/(?P<pk>[0-9]+)/$',
+        views.todo_complete_detail,
+        name='todo_complete_detail'
+    ),
+    url(
+        r'^todo_incomplete/(?P<pk>[0-9]+)/$',
+        views.todo_incomplete,
+        name='todo_incomplete'
+    ),
+    url(
+        r'^todo_delete/(?P<pk>[0-9]+)/$',
+        views.todo_delete,
+        name='todo_delete'
+    ),
+
     url(r'^(?P<username>\w+)/$', views.user_todo, name='user_todo'),
     url(r'^(?P<username>\w+)/add/$', views.use_to_do_form, name='use_to_do_form'),
     url(r'^$', views.todo_index, name="todo_index"),

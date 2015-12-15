@@ -29,6 +29,12 @@ class Todo(models.Model):
     def complete(self):
         self.completed = True
         self.completed_date = timezone.now()
+        self.save()
+
+    def incomplete(self):
+        self.completed = False
+        self.completed_date = None
+        self.save()
 
     def author_has_friends(self):
         # returns true is author has friends, else false

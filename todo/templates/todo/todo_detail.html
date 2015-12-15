@@ -29,7 +29,7 @@
             </ul>
         </div>
 
-    <a href="#" class="btn btn-primary btn-xs">Finished?</a> <a href="#" class="btn btn-primary btn-xs">Share?</a> <a href="{% url 'edit_to_do' pk=todo.pk %}" class="btn btn-primary btn-xs">Edit?</a>
+    <a href="{% url 'todo_done' pk=todo.pk %}" class="btn btn-primary btn-xs">Mark as done?</a>  <a href="{% url 'edit_to_do' pk=todo.pk %}" class="btn btn-primary btn-xs">Edit?</a>
     </div>
 
 

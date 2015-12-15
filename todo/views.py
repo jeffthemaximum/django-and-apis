@@ -29,7 +29,12 @@ def user_todo(request, username):
     return render(
         request,
         'todo/user_todo.html',
-        {'username': username, 'todos': todos, 'shared_todos': shared_todos, 'completed_todos': completed_todos}
+        {
+            'username': username,
+            'todos': todos,
+            'shared_todos': shared_todos,
+            'completed_todos': completed_todos
+        }
     )
 
 
@@ -248,3 +253,47 @@ def check_email(request):
         json.dumps(errors),
         content_type="application/json",
     )
+
+
+def todo_done(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.user != todo.author:
+        return redirect('user_todo', username=request.user.username)
+    todo.complete()
+    return redirect('user_todo', username=request.user.username)
+
+
+def todo_complete_detail(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.user != todo.author:
+        return redirect('user_todo', username=request.user.username)
+    todo_info = get_todo_base_info(todo, request, pk)
+    return render(
+        request,
+        'todo/todo_complete_detail.html',
+        {
+            'todo': todo,
+            'username': todo_info['username'],
+            'todos': todo_info['todos'],
+            'shared_todos': todo_info['shared_todos'],
+            'completed_todos': todo_info['completed_todos'],
+            'incomplete_todo_tasks': todo_info['incomplete_todo_tasks'],
+            'complete_todo_tasks': todo_info['complete_todo_tasks']
+        }
+    )
+
+
+def todo_incomplete(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.user != todo.author:
+        return redirect('user_todo', username=request.user.username)
+    todo.incomplete()
+    return redirect('todo_detail', pk=todo.pk)
+
+
+def todo_delete(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.user != todo.author:
+        return redirect('user_todo', username=request.user.username)
+    todo.delete()
+    return redirect('user_todo', username=request.user.username)
