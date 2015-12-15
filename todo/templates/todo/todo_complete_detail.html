@@ -6,7 +6,7 @@
     <h3>{{ todo.title }}</h3>
     <div class="todo-task">
         <div>
-            <p>This task is marked as complete.</p>
+            <p>This todo is marked as complete.</p>
             <table class="table">
                 <tr>
                     <td>
@@ -41,8 +41,6 @@
                     {% endfor %}
                 </ul>
             </div>
-
-        <a href="{% url 'todo_done' pk=todo.pk %}" class="btn btn-primary btn-xs">Mark as done?</a>  <a href="{% url 'edit_to_do' pk=todo.pk %}" class="btn btn-primary btn-xs">Edit?</a>
     </div>
 
 

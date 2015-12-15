@@ -260,7 +260,7 @@ def todo_done(request, pk):
     if request.user != todo.author:
         return redirect('user_todo', username=request.user.username)
     todo.complete()
-    return redirect('user_todo', username=request.user.username)
+    return redirect('todo_complete_detail', pk=todo.pk)
 
 
 def todo_complete_detail(request, pk):
