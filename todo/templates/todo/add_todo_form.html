@@ -21,13 +21,8 @@
         {{ form.due_date.errors }}
         {{ form.due_date }}
     </div>
-
-    {% if todo.author_has_friends == True %}
-    <div class="fieldWrapper">
-      <label for="{{ form.shared_user.id_for_label }}">Select users to share task with:</label>
-        {{ form.shared_user.errors }}
-        {{ form.shared_user }}
-    </div>
+    {% if friend_flag == True %}
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Share todo with friends</button>
     {% else %}
       <p>  If you had some friends, you could share your todo's with them. <a href="{% url 'friendship_friends_index' username=request.user.username %}">Try to make some over here</a>.</p>
     {% endif %}
@@ -65,16 +60,17 @@
     <br>
     <input type="submit" class="btn btn-primary" value="Add Task" />
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    
 
+  </form>
+</div>
 
-
-    <div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&close;</button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">Share todo with friends</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
@@ -110,9 +106,5 @@
         </div>
       </div>
     </div><!-- /.modal -->
-
-
-  </form>
-</div>
 
 {% endblock %}

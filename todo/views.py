@@ -69,8 +69,8 @@ def use_to_do_form(request, username=None):
         todos = get_todos(request)
         completed_todos = get_completed_todos(request)
         form = TodoForm()
-        # sets the shared_user field to only display a user's friends
-        form.fields['shared_user'].queryset = instantiate_todo_form_with_friends(request)
+        if Friend.objects.friends(request.user) != []:
+            friend_flag = True
     return render(
         request,
         'todo/add_todo_form.html',
