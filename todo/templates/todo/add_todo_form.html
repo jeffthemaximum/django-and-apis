@@ -1,6 +1,7 @@
 {% extends 'todo/base.html' %}
 
 {% block rightdiv %}
+{% load widget_tweaks %}
 
 <div class="task-list">
   <h3>Add a task</h3>
@@ -9,24 +10,27 @@
 
     <div class="fieldWrapper">
         {{ form.title.errors }}
-        {{ form.title }}
-    </div>
 
+        {{ form.title.label_tag }}{{ form.title|add_class:"form-control" }}
+    </div>
+    <br>
     <div class="fieldWrapper">
         {{ form.text.errors }}
-        {{ form.text }}
+        {{ form.text.label_tag }}{{ form.text|add_class:"form-control" }}
     </div>
-
+    <br>
     <div class="fieldWrapper">
         {{ form.due_date.errors }}
-        {{ form.due_date }}
+        {{ form.due_date.label_tag}}{{ form.due_date }}
     </div>
+    <br>
     {% if friend_flag == True %}
       <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Share todo with friends</button>
     {% else %}
       <p>  If you had some friends, you could share your todo's with them. <a href="{% url 'friendship_friends_index' username=request.user.username %}">Try to make some over here</a>.</p>
     {% endif %}
-
+    <br>
+    <br>
     <div class="hidden">
       <label>Tasks</label>
     </div>
@@ -59,10 +63,6 @@
 
     <br>
     <input type="submit" class="btn btn-primary" value="Add Task" />
-
-    
-
-  </form>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">

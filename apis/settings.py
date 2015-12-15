@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'todo',
     'datetimewidget',
     'friendship',
+    'widget_tweaks',
 )
 
 MIDDLEWARE_CLASSES = (

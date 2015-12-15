@@ -1,6 +1,7 @@
 {% extends 'todo/base.html' %}
 
 {% block rightdiv %}
+{% load widget_tweaks %}
 
 <div class="task-list">
   <h3>Edit your todo</h3>
@@ -9,29 +10,28 @@
 
     <div class="fieldWrapper">
         {{ form.title.errors }}
-        {{ form.title }}
+        {{ form.title.label_tag }}{{ form.title|add_class:"form-control" }}
     </div>
-
+    <br>
     <div class="fieldWrapper">
         {{ form.text.errors }}
-        {{ form.text }}
+        {{ form.text.label_tag }}{{ form.text|add_class:"form-control" }}
     </div>
-
+    <br>
     <div class="fieldWrapper">
         {{ form.due_date.errors }}
-        {{ form.due_date }}
+        {{ form.due_date.label_tag}}{{ form.due_date }}
     </div>
-
+    <br>
     {% if todo.author_has_friends == True %}
     <div class="fieldWrapper">
-      <label for="{{ form.shared_user.id_for_label }}">Select users to share task with:</label>
-        {{ form.shared_user.errors }}
-        {{ form.shared_user }}
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Share todo with friends</button>
     </div>
     {% else %}
       <p>  If you had some friends, you could share your todo's with them. <a href="{% url 'friendship_friends_index' username=request.user.username %}">Try to make some over here</a>.</p>
     {% endif %}
-
+    <br>
+    <br>
     <div class="hidden">
       <label>Tasks</label>
     </div>
@@ -65,16 +65,12 @@
     <br>
     <input type="submit" class="btn btn-primary" value="Edit Todo" />
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-
-
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&close;</button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">Share todo with friends</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
