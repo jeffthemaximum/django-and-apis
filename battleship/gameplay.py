@@ -34,11 +34,11 @@ class Player(object):
     pass
 
 
-class HumanPlayer(player):
+class HumanPlayer(Player):
     pass
 
 
-class ComputerPlayer(player):
+class ComputerPlayer(Player):
     pass
 
 
