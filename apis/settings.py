@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'datetimewidget',
     'friendship',
     'widget_tweaks',
+    'battleship',
 )
 
 MIDDLEWARE_CLASSES = (
