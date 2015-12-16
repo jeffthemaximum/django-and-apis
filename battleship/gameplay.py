@@ -1,6 +1,5 @@
 class Board(object):
     def __init__(self, player):
-        self.player = player
         self.ships = {
             'carrier': Ship(5),
             'battleship': Ship(4),
@@ -24,27 +23,29 @@ class Ship(object):
         self.start_column
         self.orientation
 
-    def initialize_ships(start_row, start_column, orientation):
+    def initialize_ships(self, start_row, start_column, orientation):
         self.start_row = start_row
         self.start_column = start_column
         self.orientation = orientation
 
 
 class Player(object):
-    pass
+    def __init__(self):
+        self.board = Board()
 
 
 class HumanPlayer(Player):
-    pass
+    def __init__(self):
+        self.player_type = 'Human'
 
 
 class ComputerPlayer(Player):
-    pass
+    def __init__(self):
+        self.player_type = 'Computer'
 
 
 class Game(object):
     def __init__(self, players):
-        self.board = Board()
         # players is an array
         self.players = players
         self.turn = 0
@@ -53,7 +54,18 @@ class Game(object):
     def change_player(self):
         self.turn = 1 - self.turn
 
-    def setup_ships(self, ship):
+    def setup_ships(self, ships):
+        '''ships should be the array from Board.ships'''
+        for player in self.players:
+            if player.player_type == 'Human':
+                for ship in player.board.ships:
+                    print("What row do you want to put your destroyer in?")
+                    
+            else:
+                # computer players
+                pass
+
+
 
 
 
