@@ -20,8 +20,8 @@ class Board:
         self.ships = {
             'carrier': Ship(length=5, sid=5),
             'battleship': Ship(length=4, sid=4),
-            'cruiser': Ship(length=3, sid=3),
-            'cruiser': Ship(length=3, sid=2),
+            'cruiser1': Ship(length=3, sid=3),
+            'cruiser2': Ship(length=3, sid=2),
             'destroyer': Ship(length=2, sid=1)
         }
         self.rows_as_list = self.instantiate_rows_as_list()
@@ -127,13 +127,14 @@ class Ship:
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, name):
         self.board = Board()
+        self.name = name
 
 
 class HumanPlayer(Player):
-    def __init__(self):
-        Player.__init__(self)
+    def __init__(self, name):
+        Player.__init__(self, name)
         self.player_type = 'Human'
 
 
@@ -153,22 +154,24 @@ class Game:
     def change_player(self):
         self.turn = 1 - self.turn
 
-    def setup_ships(self, board):
+    def setup_ships(self):
         ask_flag = False
         '''ships should be the array from Board.ships'''
         for player in self.players:
             if player.player_type == 'Human':
                 for ship_name, ship_object in player.board.ships.iteritems():
+                    pu.db
+                    print player.name + " is setting up ships!"
                     while (ask_flag is False):
                         start_row = int(raw_input("What row do you want to put your " + ship_name + " in? "))
                         start_column = int(raw_input("What column do you want to put your " + ship_name + " in? "))
                         orientation = int(raw_input("What direction do you want your " + ship_name + " to point? "))
                         ship_object.initialize_ship(start_row=start_row, start_column=start_column, orientation=orientation)
                         # ship_object.add_to_board(board) returns true on successful add, else false and loop repeats
-                        ask_flag = ship_object.add_to_board(board)
+                        ask_flag = ship_object.add_to_board(player.board)
                         if (ask_flag is False):
                             print("Error addding " + ship_name + " to board. Check your coordinates and try again!")
-                    board.print_board()
+                    player.board.print_board()
                     ask_flag = False
             else:
                 # computer players
@@ -176,8 +179,10 @@ class Game:
 
 # making players also makes boards
 # making board also makes ships
-player1 = HumanPlayer()
-player2 = HumanPlayer()
+player1_name = raw_input("Enter name for player 1: ")
+player1 = HumanPlayer(player1_name)
+player2_name = raw_input("Enter name for player 2: ")
+player2 = HumanPlayer(player2_name)
 
 # game needs an array of players
 game = Game([player1, player2])
@@ -186,4 +191,4 @@ game = Game([player1, player2])
 player1.board.make_boardstate_fen()
 player1.board.print_board()
 
-game.setup_ships(player1.board)
+game.setup_ships()
