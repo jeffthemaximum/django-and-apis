@@ -200,23 +200,9 @@ class Game:
             except ValueError:
                 print "Not a number."
 
-    def setup_ships_from_seed(self, seed):
-        i = 0
-        for player in self.players:
-            for ship_name, ship_object in player.board.ships.iteritems():
-                ship_object.initialize_ship(
-                    start_row=seed[i],
-                    start_column=seed[i + 1],
-                    orientation=seed[i + 2]
-                )
-                ship_object.add_to_board(player.board)
-                i += 3
-            print player.name + "\'s board"
-            player.board.print_board()
-
     def setup_ships(self, seed=None):
         if seed != None:
-            self.setup_ships_from_seed(seed)
+            setup_ships_from_seed()
         else:
             ask_flag = False
             '''ships should be the array from Board.ships'''
@@ -267,6 +253,5 @@ game = Game([player1, player2])
 player1.board.make_boardstate_fen()
 player1.board.print_board()
 
-seed = [8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3, 8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3]
-game.setup_ships(seed=seed)
+game.setup_ships()
 game.shoot()
