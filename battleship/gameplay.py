@@ -53,6 +53,8 @@ class Board:
     def map_fen_helper(self, x):
         if isinstance(x, int):
             return str(x)
+        elif isinstance(x[0], str):
+            return x[0]
         else:
             return str(x[1])
 
@@ -280,7 +282,8 @@ class Game:
         return False
 
     def hit_ship(self, ship, shot_row, shot_column, sid):
-        if ship.health <= 2:
+        # if ship not sunk
+        if ship.health >= 2:
             ship.health -= 1
             ship.change_printed_symbol_when_hit_but_not_sunk(
                 shot_row=shot_row,
@@ -288,14 +291,21 @@ class Game:
                 board=self.players[self.turn].board,
                 sid=sid
             )
+        # if ship sunk
         elif ship.health == 1:
             ship.health -= 1
             ship.declare_sunk()
             print "You sunk the %s!" % ship.name
 
     def hit(self, opponent, shot_row, shot_column):
-        sho = opponent.board.rows_as_list[shot_row][shot_column]
-        return sho in [1, 2, 3, 4, 5]
+        if isinstance(opponent.board.rows_as_list[shot_row][shot_column], list):
+            sho = opponent.board.rows_as_list[shot_row][shot_column][1]
+            return sho in [1, 2, 3, 4, 5]
+        else:
+            return False
+
+    def shoot_and_miss(self, shot_row, shot_column, opponent):
+        opponent.board.rows_as_list[shot_row][shot_column] = 'M'
 
     def shoot(self):
         player = self.players[self.turn]
@@ -332,9 +342,21 @@ class Game:
                 shot_column=shot_column,
                 sid=sid
             )
+            print player.name + " board: "
+            player.board.print_board()
+            return True
         # else
+        else:
+            self.shoot_and_miss(
+                shot_row=shot_row,
+                shot_column=shot_column,
+                opponent=opponent
+            )
+            print player.name + " board: "
+            player.board.print_board()
+            return False
             # miss
-        player.board.print_board()
+
 
 # making players also makes boards
 # making board also makes ships
