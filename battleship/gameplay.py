@@ -198,6 +198,7 @@ class Game:
         self.players = players
         self.turn = 0
         self.curplayer = players[self.turn]
+        self.won = False
 
     def change_player(self):
         self.turn = 1 - self.turn
@@ -281,19 +282,25 @@ class Game:
                 return ship_object
         return False
 
-    def hit_ship(self, ship, shot_row, shot_column, sid):
+    def hit_ship(self, ship, shot_row, shot_column, sid, opponent):
         # if ship not sunk
         if ship.health >= 2:
             ship.health -= 1
             ship.change_printed_symbol_when_hit_but_not_sunk(
                 shot_row=shot_row,
                 shot_column=shot_column,
-                board=self.players[self.turn].board,
+                board=opponent.board,
                 sid=sid
             )
         # if ship sunk
         elif ship.health == 1:
             ship.health -= 1
+            ship.change_printed_symbol_when_hit_but_not_sunk(
+                shot_row=shot_row,
+                shot_column=shot_column,
+                board=opponent.board,
+                sid=sid
+            )
             ship.declare_sunk()
             print "You sunk the %s!" % ship.name
 
@@ -340,10 +347,13 @@ class Game:
                 ship,
                 shot_row=shot_row,
                 shot_column=shot_column,
-                sid=sid
+                sid=sid,
+                opponent=opponent
             )
             print player.name + " board: "
             player.board.print_board()
+            print opponent.name + " board: "
+            opponent.board.print_board()
             return True
         # else
         else:
@@ -354,8 +364,17 @@ class Game:
             )
             print player.name + " board: "
             player.board.print_board()
+            print opponent.name + " board: "
+            opponent.board.print_board()
             return False
             # miss
+
+    def play_engine(self):
+        while self.won is False:
+            while game.shoot():
+                print "hit!"
+            print "miss!"
+            self.change_player()
 
 
 # making players also makes boards
@@ -374,7 +393,4 @@ player1.board.print_board()
 
 seed = [8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3, 8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3]
 game.setup_ships(seed=seed)
-game.shoot()
-
-game.change_player()
-game.shoot()
+game.play_engine()
