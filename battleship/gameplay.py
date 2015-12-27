@@ -25,11 +25,11 @@ class Color:
 class Board:
     def __init__(self):
         self.ships = {
-            'carrier': Ship(length=5, sid=5),
-            'battleship': Ship(length=4, sid=4),
-            'cruiser1': Ship(length=3, sid=3),
-            'cruiser2': Ship(length=3, sid=2),
-            'destroyer': Ship(length=2, sid=1)
+            'carrier': Ship(length=5, sid=5, health=5),
+            'battleship': Ship(length=4, sid=4, health=4),
+            'cruiser1': Ship(length=3, sid=3, health=3),
+            'cruiser2': Ship(length=3, sid=2, health=3),
+            'destroyer': Ship(length=2, sid=1, health=2)
         }
         self.rows_as_list = self.instantiate_rows_as_list()
         self.rows_as_dict = self.instantiate_rows_as_dict()
@@ -98,9 +98,11 @@ class Board:
 class Ship:
     ''' orientation is 1, 2, 3, or 4 for north, east, south, west,
     respectively '''
-    def __init__(self, length, sid):
+    def __init__(self, length, sid, health):
         self.length = length
         self.sid = sid
+        self.health = health
+        self.sunk = False
 
     def initialize_ship(self, start_row, start_column, orientation):
         self.start_row = start_row
@@ -116,6 +118,14 @@ class Ship:
             5: 'carrier'
         }
         return names[self.length]
+
+    def declare_sunk(self):
+        self.sunk = True
+
+    def change_printed_symbol_when_hit_but_not_sunk(
+        self, shot_row, shot_column, board, sid
+    ):
+        board.rows_as_list[shot_row][shot_column] = ['X', sid]
 
     def add_to_board(self, board):
         ''' ships get added to board as 1's '''
@@ -215,7 +225,7 @@ class Game:
             player.board.print_board()
 
     def setup_ships(self, seed=None):
-        if seed != None:
+        if seed is not None:
             self.setup_ships_from_seed(seed)
         else:
             ask_flag = False
@@ -249,9 +259,82 @@ class Game:
                     # computer players
                     pass
 
+    def get_shot(self, question_string, player):
+        n = None
+        while n is None:
+            a = raw_input(question_string % player.name)
+            try:
+                n = int(a)
+                return n
+            except ValueError:
+                print "Not a number."
+
+    def get_sid(self, player, shot_row, shot_column):
+        return player.board.rows_as_list[shot_row][shot_column][1]
+
+    def get_ship_by_sid(self, sid, player):
+        # try to change to list filter
+        for ship_name, ship_object in player.board.ships.iteritems():
+            if ship_object.sid == sid:
+                return ship_object
+        return False
+
+    def hit_ship(self, ship, shot_row, shot_column, sid):
+        if ship.health <= 2:
+            ship.health -= 1
+            ship.change_printed_symbol_when_hit_but_not_sunk(
+                shot_row=shot_row,
+                shot_column=shot_column,
+                board=self.players[self.turn].board,
+                sid=sid
+            )
+        elif ship.health == 1:
+            ship.health -= 1
+            ship.declare_sunk()
+            print "You sunk the %s!" % ship.name
+
+    def hit(self, opponent, shot_row, shot_column):
+        sho = opponent.board.rows_as_list[shot_row][shot_column]
+        return sho in [1, 2, 3, 4, 5]
+
     def shoot(self):
-        player = self.players[turn]
+        player = self.players[self.turn]
+        opponent = self.players[self.turn - 1]
         print "ready to shoot %s?" % player.name
+        # get coordinates of shot
+        shot_row = self.get_shot(
+            question_string="%s: what row do you want to shoot in? ",
+            player=player
+        )
+        shot_column = self.get_shot(
+            question_string="%s: what column do you want to shoot in? ",
+            player=player
+        )
+        # check if someone has shot there before
+        # check if ship there
+        # if ship
+        if self.hit(
+            opponent=opponent,
+            shot_row=shot_row,
+            shot_column=shot_column
+        ):
+            # hit ship
+            # find ship that was hit
+            sid = self.get_sid(
+                player=opponent,
+                shot_row=shot_row,
+                shot_column=shot_column
+            )
+            ship = self.get_ship_by_sid(sid=sid, player=opponent)
+            self.hit_ship(
+                ship,
+                shot_row=shot_row,
+                shot_column=shot_column,
+                sid=sid
+            )
+        # else
+            # miss
+        player.board.print_board()
 
 # making players also makes boards
 # making board also makes ships
@@ -269,4 +352,7 @@ player1.board.print_board()
 
 seed = [8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3, 8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3]
 game.setup_ships(seed=seed)
+game.shoot()
+
+game.change_player()
 game.shoot()
