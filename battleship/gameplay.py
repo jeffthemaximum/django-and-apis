@@ -178,6 +178,7 @@ class Player:
     def __init__(self, name):
         self.board = Board()
         self.name = name
+        self.ships = len(self.board.ships)
 
 
 class HumanPlayer(Player):
