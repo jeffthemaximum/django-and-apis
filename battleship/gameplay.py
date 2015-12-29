@@ -79,14 +79,16 @@ class Board:
     def get_boardstate_fen(self):
         return self.boardstate_fen
 
-    def print_board(self):
-        self.make_boardstate_fen()
+    def print_first_row(self):
         # print first row
         sys.stdout.write("  ")
         for i in range(ord('A'), ord('K')):
             sys.stdout.write(Color.UNDERLINE + chr(i) + Color.END)
         print ""
 
+    def print_board(self):
+        self.make_boardstate_fen()
+        self.print_first_row()
         # print rows
         for j in range(10):
             sys.stdout.write(str(j))
@@ -94,6 +96,21 @@ class Board:
             for k in range(11):
                 if k != 10:
                     sys.stdout.write(self.boardstate_fen[k + (11 * j)])
+            print ""
+
+    def print_for_opponent(self):
+        self.make_boardstate_fen()
+        self.print_first_row()
+        for j in range(10):
+            sys.stdout.write(str(j))
+            sys.stdout.write("|")
+            for k in range(11):
+                if k != 10:
+                    symbol = self.boardstate_fen[k + (11 * j)]
+                    if symbol not in ['X', 'M', 0]:
+                        sys.stdout.write(str(0))
+                    else:
+                        sys.stdout.write(self.boardstate_fen[k + (11 * j)])
             print ""
 
 
@@ -225,8 +242,6 @@ class Game:
                 )
                 ship_object.add_to_board(player.board)
                 i += 3
-            print player.name + "\'s board"
-            player.board.print_board()
 
     def setup_ships(self, seed=None):
         if seed is not None:
@@ -318,6 +333,12 @@ class Game:
     def clear_board(self):
         print(chr(27) + "[2J")
 
+    def change_ship_symbol_when_sunk(self, ship, board):
+        # get ship by sid
+        # iterate over rows_as_list based on start_row, start_column, orientation
+        # change to something to symbolize sunkenness
+        pass
+
     def shoot(self):
         player = self.players[self.turn]
         opponent = self.players[self.turn - 1]
@@ -354,10 +375,6 @@ class Game:
                 sid=sid,
                 opponent=opponent
             )
-            print player.name + " board: "
-            player.board.print_board()
-            print opponent.name + " board: "
-            opponent.board.print_board()
             return True
         # else
         else:
@@ -366,19 +383,46 @@ class Game:
                 shot_column=shot_column,
                 opponent=opponent
             )
-            print player.name + " board: "
-            player.board.print_board()
-            print opponent.name + " board: "
-            opponent.board.print_board()
             return False
             # miss
 
+    def print_relevant_boards(self, player, opponent):
+        print player.name + " board: "
+        player.board.print_board()
+        # print opponent.name + " board: "
+        # opponent.board.print_board()
+        print "how " + player.name + " sees " + opponent.name + "'s board: "
+        opponent.board.print_for_opponent()
+
     def play_engine(self):
+        # set player and opponent
+        player = self.players[self.turn]
+        opponent = self.players[self.turn - 1]
+
+        # get approval to move on
+        b = ''
+        while b != 'B':
+            b = raw_input(player.name + "'s turn. Type B to see your board now: ")
+
+
+        # play game until someone wins
         while self.won is False:
+            player = self.players[self.turn]
+            opponent = self.players[self.turn - 1]
+            self.print_relevant_boards(player=player, opponent=opponent)
+            # shoot until player misses
             while game.shoot():
+                self.print_relevant_boards(player=player, opponent=opponent)
+                self.clear_board()
                 print "hit!"
+                self.print_relevant_boards(player=player, opponent=opponent)
+            self.clear_board()
             print "miss!"
             self.change_player()
+            # get approval to move on
+            b = ''
+            while b != 'B':
+                b = raw_input(opponent.name + "'s turn. Type B to see your board now: ")
 
 
 # making players also makes boards
@@ -390,10 +434,6 @@ player2 = HumanPlayer(player2_name)
 
 # game needs an array of players
 game = Game([player1, player2])
-
-# setup and print board for player1
-player1.board.make_boardstate_fen()
-player1.board.print_board()
 
 seed = [8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3, 8, 0, 2, 1, 1, 3, 1, 8, 3, 7, 9, 4, 0, 4, 3]
 game.setup_ships(seed=seed)
