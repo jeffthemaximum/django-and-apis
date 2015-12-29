@@ -315,6 +315,9 @@ class Game:
     def shoot_and_miss(self, shot_row, shot_column, opponent):
         opponent.board.rows_as_list[shot_row][shot_column] = 'M'
 
+    def clear_board(self):
+        print(chr(27) + "[2J")
+
     def shoot(self):
         player = self.players[self.turn]
         opponent = self.players[self.turn - 1]
