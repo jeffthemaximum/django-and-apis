@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'friendship',
     'widget_tweaks',
     'battleship',
+    'urls',
 )
 
 MIDDLEWARE_CLASSES = (

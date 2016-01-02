@@ -334,7 +334,7 @@ class Game:
         print(chr(27) + "[2J")
 
     def change_ship_symbol_when_sunk(self, ship, board):
-        # get ship by sid
+
         # iterate over rows_as_list based on start_row, start_column, orientation
         # change to something to symbolize sunkenness
         pass
