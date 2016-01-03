@@ -1,0 +1,10 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <div>
+        <h4>Random num detail</h4>
+    </div>
+        <p>Key: {{ key }}</p>
+        <p>Your link is: <a href="{% url 'url_redirect' key=key %}" target="blank">{{ request.get_host }}/urls/{{ key }}</a></p>
+    </div>
+{% endblock %}

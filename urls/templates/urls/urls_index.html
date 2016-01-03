@@ -1,0 +1,12 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <div>
+        <h4>Rnadom num index</h4>
+    </div>
+    <form method="POST" class="urls-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn-default">Shortenify</button>
+    </form>
+    </div>
+{% endblock %}
