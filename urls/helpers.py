@@ -33,5 +33,14 @@ def generate_key():
 
     return ("".join(key))
 
+def get_long_url(x):
+    return x.long_url
+
+def get_keys(x):
+    return x.key
+
+def get_hits(x):
+    return x.hits
+
 # def key_exists(key):
 #     return Url.objects.filter(key=key) != []

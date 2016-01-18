@@ -1,0 +1,41 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <div>
+        <h4>Shortened URL index</h4>
+    </div>
+    <form method="POST" class="urls-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn-default">Shortenify</button>
+    </form>
+    </div>
+    <br>
+    {% if request.user.is_authenticated %}
+    <div class = "dashboard" id="ip-data">
+        <h4>Here's your historical URL data:</h4>
+        <table class="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th>Target URL</th>
+              <th>Shortened URL</th>
+              <th>Hits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for url in previous_urls %}
+            <tr>
+              <td>
+                {{ url.long_url }}
+              </td>
+              <td>
+                <a href="{% url 'url_redirect' key=url.key %}" target="blank">{{ request.get_host }}/urls/{{ url.key }}</a>
+              </td>
+              <td>
+                {{ url.hits }}
+              </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

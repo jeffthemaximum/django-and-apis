@@ -26,6 +26,9 @@ def get_acronym_api(acronym):
 
 
 def words_as_list(text):
+    '''
+    returns list of words contained within a string
+    '''
     return text.split(" ")
 
 
